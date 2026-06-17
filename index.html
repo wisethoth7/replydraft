@@ -43,6 +43,31 @@
     padding:7px 18px;background:var(--purple-dim);border:1px solid var(--purple-border);
     color:var(--purple);font-size:12px;font-weight:700;border-radius:20px;
   }
+  .usage-badge{
+    padding:6px 14px;background:var(--card2);border:1px solid var(--border);
+    color:var(--text2);font-size:12px;font-weight:700;border-radius:20px;
+  }
+  .usage-badge.warn{border-color:rgba(251,191,36,.3);color:var(--amber)}
+  .usage-badge.full{border-color:rgba(248,113,113,.3);color:var(--red)}
+  /* UPGRADE CTA BANNER */
+  .upgrade-banner{
+    background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));
+    border:1px solid var(--purple-border);border-radius:14px;
+    padding:20px 24px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .upgrade-banner-text{font-size:14px;color:var(--text);flex:1}
+  .upgrade-banner-text strong{color:var(--purple)}
+  .upgrade-btn{
+    padding:9px 20px;background:var(--purple);color:#fff;
+    font-size:13px;font-weight:800;border-radius:9px;border:none;cursor:pointer;
+    white-space:nowrap;transition:opacity .15s;
+  }
+  .upgrade-btn:hover{opacity:.85}
+  /* UPGRADE GATE MODAL */
+  #upgradeModal{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;
+    align-items:center;justify-content:center;
+  }
 
   /* HERO */
   .hero{max-width:680px;margin:0 auto;padding:72px 24px 48px;text-align:center}
@@ -227,8 +252,23 @@
 <nav>
   <div class="nav-logo">Reply<span>Draft</span></div>
   <div class="nav-tagline">AI replies for difficult customer messages</div>
-  <div class="nav-price">$9/mo · Cancel anytime</div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="usage-badge" id="usageBadge">0 / 5 free</div>
+    <div class="nav-price">$9/mo · Cancel anytime</div>
+  </div>
 </nav>
+
+<!-- UPGRADE GATE MODAL -->
+<div id="upgradeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center">
+  <div style="background:var(--card);border:1px solid var(--purple-border);border-radius:20px;max-width:420px;width:calc(100vw - 40px);padding:36px;text-align:center">
+    <div style="font-size:40px;margin-bottom:12px">🔒</div>
+    <h2 style="font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px">You've used all 5 free replies</h2>
+    <p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:24px">Upgrade to <strong style="color:var(--purple)">ReplyDraft Pro</strong> for unlimited replies, custom tone settings, and reply history — just $9/month.</p>
+    <button onclick="window.location.href='mailto:thothwisdom7@gmail.com?subject=ReplyDraft Pro&body=I want to upgrade to Pro!'" class="upgrade-btn" style="width:100%;padding:14px;font-size:15px;border-radius:11px">Upgrade to Pro — $9/month →</button>
+    <p style="font-size:11px;color:var(--text2);margin-top:12px">Resets on the 1st of each month · Free plan: 5 replies/month</p>
+    <button onclick="document.getElementById('upgradeModal').style.display='none'" style="background:none;border:none;color:var(--text2);font-size:12px;margin-top:10px;cursor:pointer">Maybe later</button>
+  </div>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -352,6 +392,31 @@
 </footer>
 
 <script>
+// ── USAGE COUNTER (5 free/month) ─────────────────────────────────────────
+const FREE_LIMIT = 5;
+const UPGRADE_SOFT = 3;
+
+function usageKey() {
+  const d = new Date();
+  return `rd_usage_${d.getFullYear()}_${d.getMonth()}`;
+}
+
+function getUsage() {
+  return parseInt(localStorage.getItem(usageKey()) || '0', 10);
+}
+
+function incrementUsage() {
+  localStorage.setItem(usageKey(), getUsage() + 1);
+}
+
+function updateUsageBadge() {
+  const used = getUsage();
+  const badge = document.getElementById('usageBadge');
+  badge.textContent = `${used} / ${FREE_LIMIT} free`;
+  badge.className = 'usage-badge' + (used >= FREE_LIMIT ? ' full' : used >= UPGRADE_SOFT ? ' warn' : '');
+}
+
+// ── MAIN ─────────────────────────────────────────────────────────────────
 let selectedSource = 'Google Review';
 
 const EXAMPLES = {
@@ -384,6 +449,12 @@ async function generateReplies() {
   if (!complaint) {
     document.getElementById('complaint-input').style.border = '1px solid var(--red)';
     setTimeout(() => document.getElementById('complaint-input').style.border = '', 2000);
+    return;
+  }
+
+  // Usage gate
+  if (getUsage() >= FREE_LIMIT) {
+    document.getElementById('upgradeModal').style.display = 'flex';
     return;
   }
 
@@ -438,7 +509,9 @@ Respond with ONLY a JSON object, no markdown, no explanation:
       else throw new Error('Could not parse AI response');
     }
 
-    renderReplies(replies);
+    incrementUsage();
+    updateUsageBadge();
+    renderReplies(replies, getUsage());
 
   } catch(err) {
     console.error(err);
@@ -454,7 +527,7 @@ Respond with ONLY a JSON object, no markdown, no explanation:
   btn.innerHTML = '✨ Generate 3 Professional Replies';
 }
 
-function renderReplies(replies) {
+function renderReplies(replies, usedCount) {
   const container = document.getElementById('reply-cards');
   const results = document.getElementById('results');
 
@@ -473,9 +546,26 @@ function renderReplies(replies) {
     </div>`;
   }).join('');
 
+  // Upgrade CTA after 3rd reply (soft nudge) or 5th (hard limit warning)
+  const remaining = FREE_LIMIT - (usedCount || getUsage());
+  if (remaining <= 0) {
+    container.innerHTML += `<div class="upgrade-banner">
+      <div class="upgrade-banner-text">You've used all <strong>${FREE_LIMIT} free replies</strong> this month. Upgrade to keep going — unlimited replies, custom tone, reply history.</div>
+      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').style.display='flex'">Upgrade to Pro →</button>
+    </div>`;
+  } else if (remaining <= FREE_LIMIT - UPGRADE_SOFT) {
+    container.innerHTML += `<div class="upgrade-banner">
+      <div class="upgrade-banner-text">You have <strong style="color:var(--amber)">${remaining} free ${remaining === 1 ? 'reply' : 'replies'} left</strong> this month. Upgrade to Pro for unlimited replies.</div>
+      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').style.display='flex'">Upgrade — $9/mo</button>
+    </div>`;
+  }
+
   results.style.display = 'block';
   results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// Init usage badge on load
+updateUsageBadge();
 
 function copyReply(key, btn) {
   const text = document.getElementById('reply-' + key).textContent;
