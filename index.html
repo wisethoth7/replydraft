@@ -66,8 +66,9 @@
   /* UPGRADE GATE MODAL */
   #upgradeModal{
     display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;
-    align-items:center;justify-content:center;
+    align-items:center;justify-content:center;pointer-events:none;
   }
+  #upgradeModal.visible{display:flex;pointer-events:auto;}
 
   /* HERO */
   .hero{max-width:680px;margin:0 auto;padding:40px 24px 32px;text-align:center}
@@ -232,7 +233,7 @@
 
   footer{
     padding:24px 40px;border-top:1px solid var(--border);
-    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
     font-size:13px;color:var(--text2);
   }
   footer a{color:var(--text2);text-decoration:none;transition:color .2s}
@@ -259,14 +260,14 @@
 </nav>
 
 <!-- UPGRADE GATE MODAL -->
-<div id="upgradeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center">
+<div id="upgradeModal" onclick="if(event.target===this)this.classList.remove('visible')" role="dialog" aria-modal="true">
   <div style="background:var(--card);border:1px solid var(--purple-border);border-radius:20px;max-width:420px;width:calc(100vw - 40px);padding:36px;text-align:center">
     <div style="font-size:40px;margin-bottom:12px">🔒</div>
     <h2 style="font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px">You've used all 5 free replies</h2>
     <p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:24px">Upgrade to <strong style="color:var(--purple)">ReplyDraft Pro</strong> for unlimited replies, custom tone settings, and reply history — just $9/month.</p>
     <button onclick="window.open('https://buy.stripe.com/9B6eV6ca8cnXelb9cv18c02','_blank')" class="upgrade-btn" style="width:100%;padding:14px;font-size:15px;border-radius:11px">Upgrade to Pro — $9/month →</button>
     <p style="font-size:11px;color:var(--text2);margin-top:12px">Resets on the 1st of each month · Free plan: 5 replies/month</p>
-    <button onclick="document.getElementById('upgradeModal').style.display='none'" style="background:none;border:none;color:var(--text2);font-size:12px;margin-top:10px;cursor:pointer">Maybe later</button>
+    <button onclick="document.getElementById('upgradeModal').classList.remove('visible')" style="background:none;border:none;color:var(--text2);font-size:12px;margin-top:10px;cursor:pointer">Maybe later</button>
   </div>
 </div>
 
@@ -454,7 +455,7 @@ async function generateReplies() {
 
   // Usage gate
   if (getUsage() >= FREE_LIMIT) {
-    document.getElementById('upgradeModal').style.display = 'flex';
+    document.getElementById('upgradeModal').classList.add('visible');
     return;
   }
 
@@ -550,12 +551,12 @@ function renderReplies(replies, usedCount) {
   if (remaining <= 0) {
     container.innerHTML += `<div class="upgrade-banner">
       <div class="upgrade-banner-text">You've used all <strong>${FREE_LIMIT} free replies</strong> this month. Upgrade to keep going — unlimited replies, custom tone, reply history.</div>
-      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').style.display='flex'">Upgrade to Pro →</button>
+      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').classList.add('visible')">Upgrade to Pro →</button>
     </div>`;
   } else if (remaining <= FREE_LIMIT - UPGRADE_SOFT) {
     container.innerHTML += `<div class="upgrade-banner">
       <div class="upgrade-banner-text">You have <strong style="color:var(--amber)">${remaining} free ${remaining === 1 ? 'reply' : 'replies'} left</strong> this month. Upgrade to Pro for unlimited replies.</div>
-      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').style.display='flex'">Upgrade — $9/mo</button>
+      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').classList.add('visible')">Upgrade — $9/mo</button>
     </div>`;
   }
 
