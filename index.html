@@ -39,16 +39,35 @@
   .nav-logo{font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--text)}
   .nav-logo span{color:var(--purple)}
   .nav-tagline{font-size:13px;color:var(--text2)}
-  .nav-price{
-    padding:7px 18px;background:var(--purple-dim);border:1px solid var(--purple-border);
-    color:var(--purple);font-size:12px;font-weight:700;border-radius:20px;
+
+  /* Nav auth buttons */
+  .nav-login-btn{
+    padding:6px 14px;background:transparent;border:1px solid var(--border);
+    color:var(--text2);font-size:12px;font-weight:700;border-radius:20px;
+    cursor:pointer;transition:all .15s;font-family:inherit;
   }
+  .nav-login-btn:hover{border-color:var(--purple-border);color:var(--purple)}
+  .nav-signup-btn{
+    padding:7px 16px;background:var(--purple);border:1px solid var(--purple);
+    color:#fff;font-size:12px;font-weight:700;border-radius:20px;
+    cursor:pointer;transition:opacity .15s;font-family:inherit;
+  }
+  .nav-signup-btn:hover{opacity:.85}
+  .nav-account-btn{
+    padding:6px 14px;background:var(--card2);border:1px solid var(--border);
+    color:var(--text);font-size:12px;font-weight:700;border-radius:20px;
+    cursor:pointer;transition:all .15s;font-family:inherit;
+  }
+  .nav-account-btn:hover{border-color:var(--purple-border)}
+
+  /* Usage badge */
   .usage-badge{
     padding:6px 14px;background:var(--card2);border:1px solid var(--border);
     color:var(--text2);font-size:12px;font-weight:700;border-radius:20px;
   }
   .usage-badge.warn{border-color:rgba(251,191,36,.3);color:var(--amber)}
   .usage-badge.full{border-color:rgba(248,113,113,.3);color:var(--red)}
+
   /* UPGRADE CTA BANNER */
   .upgrade-banner{
     background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));
@@ -60,15 +79,64 @@
   .upgrade-btn{
     padding:9px 20px;background:var(--purple);color:#fff;
     font-size:13px;font-weight:800;border-radius:9px;border:none;cursor:pointer;
-    white-space:nowrap;transition:opacity .15s;
+    white-space:nowrap;transition:opacity .15s;font-family:inherit;
   }
   .upgrade-btn:hover{opacity:.85}
-  /* UPGRADE GATE MODAL */
-  #upgradeModal{
+
+  /* AUTH MODAL */
+  #authModal{
     display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;
     align-items:center;justify-content:center;pointer-events:none;
   }
-  #upgradeModal.visible{display:flex;pointer-events:auto;}
+  #authModal.visible{display:flex;pointer-events:auto}
+  .auth-box{
+    background:var(--card);border:1px solid var(--purple-border);
+    border-radius:20px;max-width:380px;width:calc(100vw - 40px);padding:32px;
+  }
+  .auth-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--card2);border-radius:10px;padding:4px}
+  .auth-tab{
+    flex:1;padding:8px;border:none;background:transparent;
+    color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;border-radius:8px;transition:all .15s;font-family:inherit;
+  }
+  .auth-tab.active{background:var(--purple);color:#fff}
+  .auth-input{
+    display:block;width:100%;padding:11px 14px;
+    background:var(--card2);border:1px solid var(--border);
+    border-radius:9px;color:var(--text);font-size:14px;
+    font-family:inherit;outline:none;margin-bottom:10px;transition:border-color .2s;
+  }
+  .auth-input:focus{border-color:var(--purple-border)}
+  .auth-submit{
+    width:100%;padding:12px;background:var(--purple);color:#fff;
+    font-size:14px;font-weight:800;border-radius:10px;border:none;
+    cursor:pointer;transition:opacity .15s;margin-top:6px;font-family:inherit;
+  }
+  .auth-submit:hover{opacity:.85}
+  .auth-submit:disabled{opacity:.5;cursor:not-allowed}
+  .auth-msg{
+    font-size:12px;margin-bottom:10px;padding:8px 12px;border-radius:8px;line-height:1.5;
+  }
+  .auth-msg.error{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:var(--red)}
+  .auth-msg.success{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);color:var(--green)}
+  .auth-switch{font-size:12px;color:var(--text2);text-align:center;margin-top:14px}
+
+  /* ACCOUNT PANEL */
+  #accountPanel{
+    display:none;position:fixed;top:62px;right:16px;z-index:200;
+    background:var(--card);border:1px solid var(--purple-border);
+    border-radius:14px;padding:20px;min-width:240px;
+    box-shadow:0 12px 40px rgba(0,0,0,.5);
+  }
+  #accountPanel.visible{display:block}
+
+  /* UPGRADE GATE (inline, replaces old modal) */
+  #upgradeGate{
+    display:none;
+    background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));
+    border:1px solid var(--purple-border);border-radius:14px;
+    padding:32px 24px;text-align:center;margin-bottom:20px;
+  }
+  #upgradeGate.visible{display:block}
 
   /* HERO */
   .hero{max-width:680px;margin:0 auto;padding:40px 24px 32px;text-align:center}
@@ -87,7 +155,6 @@
   /* MAIN TOOL */
   .tool-wrap{max-width:800px;margin:0 auto;padding:0 24px 48px}
 
-  /* Input section */
   .input-card{
     background:var(--card);border:1px solid var(--border);
     border-radius:16px;overflow:hidden;margin-bottom:20px;
@@ -106,7 +173,6 @@
   }
   .message-textarea::placeholder{color:var(--text2)}
 
-  /* Context row */
   .context-row{
     display:flex;gap:10px;padding:12px 20px;
     border-top:1px solid var(--border);flex-wrap:wrap;align-items:center;
@@ -120,16 +186,14 @@
   .ctx-select:focus{border-color:var(--purple-border)}
   .ctx-select option{background:var(--card2)}
 
-  /* Source type */
   .source-pills{display:flex;gap:6px;flex-wrap:wrap}
   .source-pill{
     padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;
     cursor:pointer;border:1px solid var(--border);background:transparent;
-    color:var(--text2);transition:all .15s;
+    color:var(--text2);transition:all .15s;font-family:inherit;
   }
   .source-pill.active{background:var(--purple-dim);border-color:var(--purple-border);color:var(--purple)}
 
-  /* Generate button */
   .gen-btn{
     width:100%;padding:13px;background:var(--purple);color:#fff;
     font-size:15px;font-weight:800;border-radius:12px;border:none;
@@ -139,7 +203,6 @@
   .gen-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(139,92,246,0.4)}
   .gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-  /* Loading */
   @keyframes spin{to{transform:rotate(360deg)}}
   .spinner{
     display:inline-block;width:16px;height:16px;
@@ -148,7 +211,6 @@
     vertical-align:middle;margin-right:8px;
   }
 
-  /* Results */
   .results-label{
     font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--text2);
     text-transform:uppercase;margin-bottom:14px;
@@ -181,18 +243,17 @@
   .copy-btn{
     padding:7px 16px;background:var(--purple-dim);border:1px solid var(--purple-border);
     color:var(--purple);font-size:12px;font-weight:700;border-radius:8px;
-    cursor:pointer;transition:all .15s;border-style:solid;
+    cursor:pointer;transition:all .15s;border-style:solid;font-family:inherit;
   }
   .copy-btn:hover{background:rgba(139,92,246,.18)}
   .copy-btn.copied{background:var(--green-dim);border-color:rgba(52,211,153,.2);color:var(--green)}
   .edit-btn{
     padding:7px 16px;background:transparent;border:1px solid var(--border);
     color:var(--text2);font-size:12px;font-weight:600;border-radius:8px;
-    cursor:pointer;transition:all .15s;
+    cursor:pointer;transition:all .15s;font-family:inherit;
   }
   .edit-btn:hover{border-color:var(--purple-border);color:var(--purple)}
 
-  /* Examples */
   .examples{margin-bottom:20px}
   .examples-label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px}
   .example-pills{display:flex;gap:8px;flex-wrap:wrap}
@@ -202,7 +263,6 @@
   }
   .example-pill:hover{border-color:var(--purple-border);color:var(--purple)}
 
-  /* Pricing strip */
   .pricing-strip{
     background:var(--surface);border-top:1px solid var(--border);
     border-bottom:1px solid var(--border);padding:48px 24px;text-align:center;
@@ -222,7 +282,6 @@
   .price-opt .pper{font-size:12px;color:var(--text2);margin-bottom:4px}
   .price-opt .pfeat{font-size:11px;color:var(--text2);line-height:1.7;margin-top:12px;text-align:left}
 
-  /* Who it's for */
   .who-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
   .who-card{
     background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -245,31 +304,44 @@
     .tool-wrap{padding:0 16px 60px}
     .context-row{flex-direction:column;align-items:flex-start}
     .price-row{flex-direction:column;align-items:center}
+    #accountPanel{top:auto;bottom:0;left:0;right:0;border-radius:16px 16px 0 0;min-width:unset}
   }
 </style>
 </head>
 <body>
 
+<!-- AUTH MODAL -->
+<div id="authModal" onclick="if(event.target===this)closeAuth()" role="dialog" aria-modal="true">
+  <div class="auth-box">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSignup" onclick="switchAuthTab('signup')">Sign up free</button>
+      <button class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Log in</button>
+    </div>
+    <div id="authMsg" class="auth-msg error" style="display:none"></div>
+    <input type="email" id="authEmail" class="auth-input" placeholder="Email address" autocomplete="email">
+    <input type="password" id="authPassword" class="auth-input" placeholder="Password (min 6 chars)" autocomplete="new-password">
+    <button class="auth-submit" id="authSubmitBtn" onclick="submitAuth()">Create free account</button>
+    <p class="auth-switch" id="authSwitch">Already have an account? <a onclick="switchAuthTab('login')" style="color:var(--purple);cursor:pointer">Log in</a></p>
+  </div>
+</div>
+
+<!-- ACCOUNT PANEL -->
+<div id="accountPanel">
+  <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:12px">YOUR ACCOUNT</div>
+  <div style="font-size:14px;font-weight:700;margin-bottom:4px;word-break:break-all" id="acctEmail"></div>
+  <div style="font-size:12px;color:var(--text2);margin-bottom:12px" id="acctPlanLabel"></div>
+  <div id="acctRepliesLabel" style="font-size:13px;margin-bottom:16px"></div>
+  <button id="acctUpgradeBtn" class="upgrade-btn" style="width:100%;margin-bottom:10px;padding:10px 16px;font-size:13px;border-radius:9px" onclick="openUpgrade()">Upgrade to Pro — $9/mo →</button>
+  <button onclick="doSignOut()" style="width:100%;padding:9px;background:transparent;border:1px solid var(--border);color:var(--text2);font-size:13px;border-radius:8px;cursor:pointer;font-family:inherit">Log out</button>
+</div>
+
 <nav>
   <div class="nav-logo">Reply<span>Draft</span></div>
   <div class="nav-tagline">AI replies for difficult customer messages</div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <div class="usage-badge" id="usageBadge">0 / 5 free</div>
-    <div class="nav-price">$9/mo · Cancel anytime</div>
+  <div id="navAuth" style="display:flex;align-items:center;gap:8px">
+    <div class="usage-badge" style="opacity:.3">···</div>
   </div>
 </nav>
-
-<!-- UPGRADE GATE MODAL -->
-<div id="upgradeModal" onclick="if(event.target===this)this.classList.remove('visible')" role="dialog" aria-modal="true">
-  <div style="background:var(--card);border:1px solid var(--purple-border);border-radius:20px;max-width:420px;width:calc(100vw - 40px);padding:36px;text-align:center">
-    <div style="font-size:40px;margin-bottom:12px">🔒</div>
-    <h2 style="font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px">You've used all 5 free replies</h2>
-    <p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:24px">Upgrade to <strong style="color:var(--purple)">ReplyDraft Pro</strong> for unlimited replies, custom tone settings, and reply history — just $9/month.</p>
-    <button onclick="window.open('https://buy.stripe.com/9B6eV6ca8cnXelb9cv18c02','_blank')" class="upgrade-btn" style="width:100%;padding:14px;font-size:15px;border-radius:11px">Upgrade to Pro — $9/month →</button>
-    <p style="font-size:11px;color:var(--text2);margin-top:12px">Resets on the 1st of each month · Free plan: 5 replies/month</p>
-    <button onclick="document.getElementById('upgradeModal').classList.remove('visible')" style="background:none;border:none;color:var(--text2);font-size:12px;margin-top:10px;cursor:pointer">Maybe later</button>
-  </div>
-</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -332,12 +404,21 @@
     ✨ Generate 3 Professional Replies
   </button>
 
+  <!-- Upgrade gate (inline — shown when quota exceeded) -->
+  <div id="upgradeGate">
+    <div style="font-size:36px;margin-bottom:10px">🔒</div>
+    <h3 style="font-size:20px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px">You've used all 5 free replies</h3>
+    <p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:20px">Upgrade to <strong style="color:var(--purple)">ReplyDraft Pro</strong> for unlimited replies — just $9/month.</p>
+    <button class="upgrade-btn" onclick="openUpgrade()" style="padding:12px 28px;font-size:14px;border-radius:10px">Upgrade to Pro — $9/month →</button>
+    <p style="font-size:11px;color:var(--text2);margin-top:12px">Resets on the 1st of each month · Free plan: 5 replies/month</p>
+  </div>
+
   <!-- Results -->
   <div id="results" style="display:none">
     <div class="results-label">YOUR 3 REPLIES — PICK THE BEST FIT</div>
     <div class="reply-cards" id="reply-cards"></div>
     <div style="text-align:center;margin-top:20px">
-      <button onclick="generateReplies()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s"
+      <button onclick="generateReplies()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit"
         onmouseover="this.style.borderColor='var(--purple-border)';this.style.color='var(--purple)'"
         onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">
         ↻ Regenerate all 3
@@ -392,32 +473,217 @@
   <span>© 2026 Nile Dreams Digital</span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-// ── USAGE COUNTER (5 free/month) ─────────────────────────────────────────
-const FREE_LIMIT = 5;
-const UPGRADE_SOFT = 3;
+// ── SUPABASE CLIENT ───────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://hvyfeebazmiqateniupm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eWZlZWJhem1pcWF0ZW5pdXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTI2MTcsImV4cCI6MjA5NTY4ODYxN30.89qqEshOwp1bU2AQbzSpZ36_TuqP2jVULo_9Ug-S9_c';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const STRIPE_PRO_URL = 'https://buy.stripe.com/9B6eV6ca8cnXelb9cv18c02';
 
-function usageKey() {
-  const d = new Date();
-  return `rd_usage_${d.getFullYear()}_${d.getMonth()}`;
+// ── AUTH STATE ────────────────────────────────────────────────────────────
+let currentUser = null;
+let currentPlan = 'free';
+let currentRemaining = null; // null = unknown/Pro, number = Free remaining
+
+// ── NAV ──────────────────────────────────────────────────────────────────
+function showLoggedOutNav() {
+  document.getElementById('navAuth').innerHTML =
+    '<button class="nav-login-btn" onclick="openAuth(\'login\')">Log in</button>' +
+    '<button class="nav-signup-btn" onclick="openAuth(\'signup\')">Sign up free</button>';
 }
 
-function getUsage() {
-  return parseInt(localStorage.getItem(usageKey()) || '0', 10);
-}
-
-function incrementUsage() {
-  localStorage.setItem(usageKey(), getUsage() + 1);
+function showLoggedInNav() {
+  let badgeHtml;
+  if (currentPlan === 'pro') {
+    badgeHtml = '<div class="usage-badge" style="color:var(--purple);border-color:rgba(139,92,246,.3)">Pro Plan ✓</div>';
+  } else {
+    const rem = currentRemaining;
+    const cls = 'usage-badge' + (rem !== null && rem <= 0 ? ' full' : rem !== null && rem <= 1 ? ' warn' : '');
+    const txt = rem !== null ? rem + ' of 5 left' : '···';
+    badgeHtml = '<div class="' + cls + '" id="usageBadge">' + txt + '</div>';
+  }
+  document.getElementById('navAuth').innerHTML =
+    badgeHtml +
+    '<button class="nav-account-btn" id="navAccountBtn" onclick="toggleAccountPanel()">Account</button>';
 }
 
 function updateUsageBadge() {
-  const used = getUsage();
-  const badge = document.getElementById('usageBadge');
-  badge.textContent = `${used} / ${FREE_LIMIT} free`;
-  badge.className = 'usage-badge' + (used >= FREE_LIMIT ? ' full' : used >= UPGRADE_SOFT ? ' warn' : '');
+  if (currentPlan === 'pro') return;
+  const el = document.getElementById('usageBadge');
+  if (!el) return;
+  const rem = currentRemaining;
+  el.textContent = rem !== null ? rem + ' of 5 left' : '···';
+  el.className = 'usage-badge' + (rem !== null && rem <= 0 ? ' full' : rem !== null && rem <= 1 ? ' warn' : '');
 }
 
-// ── MAIN ─────────────────────────────────────────────────────────────────
+// ── ACCOUNT PANEL ─────────────────────────────────────────────────────────
+function toggleAccountPanel() {
+  const panel = document.getElementById('accountPanel');
+  if (panel.classList.contains('visible')) {
+    panel.classList.remove('visible');
+    return;
+  }
+  if (currentUser) {
+    document.getElementById('acctEmail').textContent = currentUser.email;
+    document.getElementById('acctPlanLabel').textContent =
+      currentPlan === 'pro' ? '✓ Pro Plan — Unlimited replies' : 'Free Plan';
+    const replEl = document.getElementById('acctRepliesLabel');
+    const upBtn  = document.getElementById('acctUpgradeBtn');
+    if (currentPlan === 'pro') {
+      replEl.style.display = 'none';
+      upBtn.style.display  = 'none';
+    } else {
+      replEl.style.display = 'block';
+      replEl.textContent = currentRemaining !== null
+        ? currentRemaining + ' of 5 replies left this month'
+        : 'Loading…';
+      replEl.style.color = currentRemaining !== null && currentRemaining <= 0
+        ? 'var(--red)' : 'var(--text2)';
+      upBtn.style.display = 'block';
+    }
+  }
+  panel.classList.add('visible');
+}
+
+document.addEventListener('click', e => {
+  const panel = document.getElementById('accountPanel');
+  if (!panel || !panel.classList.contains('visible')) return;
+  if (!panel.contains(e.target) && e.target.id !== 'navAccountBtn') {
+    panel.classList.remove('visible');
+  }
+});
+
+function openUpgrade() {
+  if (!currentUser) { openAuth('signup'); return; }
+  const url = STRIPE_PRO_URL
+    + '?client_reference_id=' + encodeURIComponent(currentUser.id)
+    + '&prefilled_email='      + encodeURIComponent(currentUser.email);
+  window.open(url, '_blank');
+  document.getElementById('accountPanel').classList.remove('visible');
+}
+
+async function doSignOut() {
+  document.getElementById('accountPanel').classList.remove('visible');
+  await sb.auth.signOut();
+}
+
+// ── AUTH MODAL ────────────────────────────────────────────────────────────
+let _authMode = 'signup';
+
+function openAuth(mode) {
+  _authMode = mode || 'signup';
+  switchAuthTab(_authMode);
+  const msgEl = document.getElementById('authMsg');
+  msgEl.style.display = 'none';
+  msgEl.className = 'auth-msg error';
+  document.getElementById('authEmail').value    = '';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authModal').classList.add('visible');
+  setTimeout(() => document.getElementById('authEmail').focus(), 60);
+}
+
+function closeAuth() {
+  document.getElementById('authModal').classList.remove('visible');
+}
+
+function switchAuthTab(mode) {
+  _authMode = mode;
+  document.getElementById('tabSignup').classList.toggle('active', mode === 'signup');
+  document.getElementById('tabLogin').classList.toggle('active',  mode === 'login');
+  document.getElementById('authSubmitBtn').textContent =
+    mode === 'signup' ? 'Create free account' : 'Log in';
+  document.getElementById('authPassword').setAttribute(
+    'autocomplete', mode === 'signup' ? 'new-password' : 'current-password');
+  document.getElementById('authSwitch').innerHTML = mode === 'signup'
+    ? 'Already have an account? <a onclick="switchAuthTab(\'login\')" style="color:var(--purple);cursor:pointer">Log in</a>'
+    : 'New here? <a onclick="switchAuthTab(\'signup\')" style="color:var(--purple);cursor:pointer">Sign up free</a>';
+}
+
+async function submitAuth() {
+  const email    = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn      = document.getElementById('authSubmitBtn');
+
+  if (!email || !password) { setAuthMsg('error', 'Please enter your email and password.'); return; }
+  if (_authMode === 'signup' && password.length < 6) {
+    setAuthMsg('error', 'Password must be at least 6 characters.'); return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = _authMode === 'signup' ? 'Creating account…' : 'Logging in…';
+  document.getElementById('authMsg').style.display = 'none';
+
+  const { data, error } = _authMode === 'signup'
+    ? await sb.auth.signUp({ email, password })
+    : await sb.auth.signInWithPassword({ email, password });
+
+  btn.disabled    = false;
+  btn.textContent = _authMode === 'signup' ? 'Create free account' : 'Log in';
+
+  if (error) { setAuthMsg('error', error.message); return; }
+
+  if (_authMode === 'signup' && data.user && !data.session) {
+    setAuthMsg('success', 'Check your email to confirm your account, then log in here.');
+    return;
+  }
+
+  closeAuth();
+}
+
+function setAuthMsg(type, msg) {
+  const el = document.getElementById('authMsg');
+  el.textContent  = msg;
+  el.className    = 'auth-msg ' + type;
+  el.style.display = 'block';
+}
+
+document.getElementById('authPassword').addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitAuth();
+});
+
+// ── USAGE FETCH ────────────────────────────────────────────────────────────
+async function fetchUsage() {
+  const { data } = await sb.from('replydraft_usage')
+    .select('plan, replies_used').maybeSingle();
+  if (!data) {
+    currentPlan      = 'free';
+    currentRemaining = 5;
+  } else {
+    currentPlan      = data.plan || 'free';
+    currentRemaining = currentPlan === 'pro'
+      ? null
+      : Math.max(0, 5 - (data.replies_used || 0));
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await fetchUsage();
+    showLoggedInNav();
+  } else {
+    showLoggedOutNav();
+  }
+
+  sb.auth.onAuthStateChange(async (_event, session) => {
+    if (session) {
+      currentUser = session.user;
+      await fetchUsage();
+      showLoggedInNav();
+    } else {
+      currentUser      = null;
+      currentPlan      = 'free';
+      currentRemaining = null;
+      document.getElementById('accountPanel').classList.remove('visible');
+      showLoggedOutNav();
+    }
+  });
+})();
+
+// ── EXAMPLES ─────────────────────────────────────────────────────────────
 let selectedSource = 'Google Review';
 
 const EXAMPLES = {
@@ -439,10 +705,11 @@ function setSource(src, btn) {
   btn.classList.add('active');
 }
 
+// ── GENERATE REPLIES ──────────────────────────────────────────────────────
 const TONES = [
-  { key: 'apologetic', label: 'Apologetic',  desc: 'Empathetic, takes full ownership', cssClass: 'apologetic' },
-  { key: 'neutral',    label: 'Professional', desc: 'Balanced, addresses the issue calmly', cssClass: 'neutral' },
-  { key: 'firm',       label: 'Firm',         desc: 'Respectful but sets clear boundaries', cssClass: 'firm' },
+  { key: 'apologetic', label: 'Apologetic',   desc: 'Empathetic, takes full ownership',        cssClass: 'apologetic' },
+  { key: 'neutral',    label: 'Professional', desc: 'Balanced, addresses the issue calmly',    cssClass: 'neutral' },
+  { key: 'firm',       label: 'Firm',         desc: 'Respectful but sets clear boundaries',    cssClass: 'firm' },
 ];
 
 async function generateReplies() {
@@ -453,15 +720,44 @@ async function generateReplies() {
     return;
   }
 
-  // Usage gate
-  if (getUsage() >= FREE_LIMIT) {
-    document.getElementById('upgradeModal').classList.add('visible');
+  // Auth gate — must be signed in
+  if (!currentUser) { openAuth('signup'); return; }
+
+  const btn         = document.getElementById('gen-btn');
+  const upgradeGate = document.getElementById('upgradeGate');
+  upgradeGate.classList.remove('visible');
+  document.getElementById('results').style.display = 'none';
+
+  btn.disabled  = true;
+  btn.innerHTML = '<span class="spinner"></span> Checking…';
+
+  // Atomic usage check + increment via RPC
+  const { data: gate, error: gateErr } = await sb.rpc('replydraft_use_reply');
+
+  if (gateErr) {
+    btn.disabled  = false;
+    btn.innerHTML = '✨ Generate 3 Professional Replies';
+    showGenError('Error checking quota — please try again.');
     return;
   }
 
-  const btn = document.getElementById('gen-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Generating...';
+  if (!gate?.allowed) {
+    currentPlan      = gate?.plan || currentPlan;
+    currentRemaining = 0;
+    updateUsageBadge();
+    btn.disabled  = false;
+    btn.innerHTML = '✨ Generate 3 Professional Replies';
+    upgradeGate.classList.add('visible');
+    upgradeGate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Update local state from authoritative RPC response
+  currentPlan      = gate.plan;
+  currentRemaining = typeof gate.remaining === 'number' ? gate.remaining : null;
+  updateUsageBadge();
+
+  btn.innerHTML = '<span class="spinner"></span> Generating…';
 
   const bizType = document.getElementById('biz-type').value;
 
@@ -497,39 +793,36 @@ Respond with ONLY a JSON object, no markdown, no explanation:
     });
 
     const data = await response.json();
-    const raw = data.content?.[0]?.text || '';
+    const raw  = data.content?.[0]?.text || '';
 
     let replies;
     try {
       replies = JSON.parse(raw.replace(/```json|```/g, '').trim());
     } catch(e) {
-      // Try to extract JSON from text
       const match = raw.match(/\{[\s\S]*\}/);
       if (match) replies = JSON.parse(match[0]);
       else throw new Error('Could not parse AI response');
     }
 
-    incrementUsage();
-    updateUsageBadge();
-    renderReplies(replies, getUsage());
+    renderReplies(replies);
 
   } catch(err) {
     console.error(err);
-    document.getElementById('results').style.display = 'block';
-    document.getElementById('reply-cards').innerHTML = `
-      <div style="text-align:center;padding:32px;color:var(--red);font-size:14px">
-        Something went wrong — please try again.<br>
-        <span style="font-size:12px;color:var(--text2)">${err.message}</span>
-      </div>`;
+    showGenError('Something went wrong — please try again. ' + err.message);
   }
 
-  btn.disabled = false;
+  btn.disabled  = false;
   btn.innerHTML = '✨ Generate 3 Professional Replies';
 }
 
-function renderReplies(replies, usedCount) {
+function showGenError(msg) {
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('reply-cards').innerHTML =
+    '<div style="text-align:center;padding:32px;color:var(--red);font-size:14px">' + escHtml(msg) + '</div>';
+}
+
+function renderReplies(replies) {
   const container = document.getElementById('reply-cards');
-  const results = document.getElementById('results');
 
   container.innerHTML = TONES.map(tone => {
     const text = replies[tone.key] || 'No reply generated for this tone.';
@@ -546,26 +839,25 @@ function renderReplies(replies, usedCount) {
     </div>`;
   }).join('');
 
-  // Upgrade CTA after 3rd reply (soft nudge) or 5th (hard limit warning)
-  const remaining = FREE_LIMIT - (usedCount || getUsage());
-  if (remaining <= 0) {
-    container.innerHTML += `<div class="upgrade-banner">
-      <div class="upgrade-banner-text">You've used all <strong>${FREE_LIMIT} free replies</strong> this month. Upgrade to keep going — unlimited replies, custom tone, reply history.</div>
-      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').classList.add('visible')">Upgrade to Pro →</button>
-    </div>`;
-  } else if (remaining <= FREE_LIMIT - UPGRADE_SOFT) {
-    container.innerHTML += `<div class="upgrade-banner">
-      <div class="upgrade-banner-text">You have <strong style="color:var(--amber)">${remaining} free ${remaining === 1 ? 'reply' : 'replies'} left</strong> this month. Upgrade to Pro for unlimited replies.</div>
-      <button class="upgrade-btn" onclick="document.getElementById('upgradeModal').classList.add('visible')">Upgrade — $9/mo</button>
-    </div>`;
+  // Remaining counter / upgrade nudge (Free plan only)
+  if (currentPlan !== 'pro') {
+    const rem = currentRemaining;
+    if (rem !== null && rem <= 0) {
+      container.innerHTML += `<div class="upgrade-banner">
+        <div class="upgrade-banner-text">You've used all <strong>5 free replies</strong> this month. Upgrade to keep going.</div>
+        <button class="upgrade-btn" onclick="openUpgrade()">Upgrade to Pro →</button>
+      </div>`;
+    } else if (rem !== null) {
+      container.innerHTML += `<div style="text-align:center;margin-top:12px;padding:10px;font-size:12px;color:var(--text2)">
+        <strong style="color:var(--text)">${rem}</strong> of 5 free ${rem === 1 ? 'reply' : 'replies'} left this month ·
+        <span onclick="openUpgrade()" style="color:var(--purple);cursor:pointer">Upgrade for unlimited</span>
+      </div>`;
+    }
   }
 
-  results.style.display = 'block';
-  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-// Init usage badge on load
-updateUsageBadge();
 
 function copyReply(key, btn) {
   const text = document.getElementById('reply-' + key).textContent;
@@ -584,15 +876,13 @@ function editReply(key) {
 }
 
 function saveEdit(key, textarea) {
-  const el = document.getElementById('reply-' + key);
-  el.textContent = textarea.value;
+  document.getElementById('reply-' + key).textContent = textarea.value;
 }
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// Handle Enter key in textarea
 document.getElementById('complaint-input').addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.ctrlKey) generateReplies();
 });
