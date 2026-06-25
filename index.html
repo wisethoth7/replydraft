@@ -635,6 +635,13 @@ async function submitAuth() {
 
   if (error) { setAuthMsg('error', error.message); return; }
 
+  if (_authMode === 'signup' && data.user) {
+    // Fire the branded welcome email (non-blocking — don't hold up signup)
+    sb.functions.invoke('send-welcome-email', {
+      body: { to: email, name: '', product: 'replydraft', plan: 'free' }
+    }).catch(() => {});
+  }
+
   if (_authMode === 'signup' && data.user && !data.session) {
     setAuthMsg('success', 'Check your email to confirm your account, then log in here.');
     return;
@@ -929,8 +936,7 @@ async function sendRdResetEmail() {
   const btn = document.getElementById('rd-reset-btn');
   if (!email) { setAuthMsg('error', 'Please enter your email.'); document.getElementById('authMsg').style.display = 'block'; return; }
   btn.disabled = true; btn.textContent = 'Sending...';
-  const resetRedirect = new URL('reset-password.html', window.location.href).href.split('#')[0];
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: resetRedirect });
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://replydraft.niledreamsdigital.com/reset-password' });
   btn.disabled = false; btn.textContent = 'Send Reset Email';
   setAuthMsg(error ? 'error' : 'success', error ? (error.message || 'Could not send reset email.') : 'Reset link sent — check your email!');
   document.getElementById('authMsg').style.display = 'block';
