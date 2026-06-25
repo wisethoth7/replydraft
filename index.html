@@ -320,6 +320,17 @@
     <div id="authMsg" class="auth-msg error" style="display:none"></div>
     <input type="email" id="authEmail" class="auth-input" placeholder="Email address" autocomplete="email">
     <input type="password" id="authPassword" class="auth-input" placeholder="Password (min 6 chars)" autocomplete="new-password">
+    <div id="rd-forgot-link" style="display:none;text-align:right;margin:-6px 0 12px">
+      <a href="#" onclick="showRdForgot();return false;" style="color:var(--text2);font-size:12px">Forgot password?</a>
+    </div>
+    <div id="rd-forgot-section" style="display:none">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Enter your email and we'll send a reset link.</p>
+      <input type="email" id="rd-reset-email" class="auth-input" placeholder="Email address">
+      <button class="auth-submit" id="rd-reset-btn" onclick="sendRdResetEmail()">Send Reset Email</button>
+      <div style="text-align:center;margin-top:8px">
+        <a href="#" onclick="hideRdForgot();return false;" style="color:var(--text2);font-size:12px">← Back</a>
+      </div>
+    </div>
     <button class="auth-submit" id="authSubmitBtn" onclick="submitAuth()">Create free account</button>
     <p class="auth-switch" id="authSwitch">Already have an account? <a onclick="switchAuthTab('login')" style="color:var(--purple);cursor:pointer">Log in</a></p>
   </div>
@@ -598,6 +609,7 @@ function switchAuthTab(mode) {
   document.getElementById('authSwitch').innerHTML = mode === 'signup'
     ? 'Already have an account? <a onclick="switchAuthTab(\'login\')" style="color:var(--purple);cursor:pointer">Log in</a>'
     : 'New here? <a onclick="switchAuthTab(\'signup\')" style="color:var(--purple);cursor:pointer">Sign up free</a>';
+  hideRdForgot();
 }
 
 async function submitAuth() {
@@ -669,6 +681,10 @@ async function fetchUsage() {
   }
 
   sb.auth.onAuthStateChange(async (_event, session) => {
+    if (_event === 'PASSWORD_RECOVERY') {
+      document.getElementById('rd-pw-recovery-overlay').style.display = 'flex';
+      return;
+    }
     if (session) {
       currentUser = session.user;
       await fetchUsage();
@@ -886,7 +902,70 @@ function escHtml(s) {
 document.getElementById('complaint-input').addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.ctrlKey) generateReplies();
 });
+
+function showRdForgot() {
+  document.getElementById('authEmail').style.display = 'none';
+  document.getElementById('authPassword').style.display = 'none';
+  document.getElementById('rd-forgot-link').style.display = 'none';
+  document.getElementById('authSubmitBtn').style.display = 'none';
+  document.getElementById('authSwitch').style.display = 'none';
+  document.getElementById('authMsg').style.display = 'none';
+  document.getElementById('rd-forgot-section').style.display = 'block';
+  document.getElementById('rd-reset-email').value = document.getElementById('authEmail').value;
+}
+
+function hideRdForgot() {
+  document.getElementById('rd-forgot-section').style.display = 'none';
+  document.getElementById('authEmail').style.display = '';
+  document.getElementById('authPassword').style.display = '';
+  document.getElementById('authSubmitBtn').style.display = '';
+  document.getElementById('authSwitch').style.display = '';
+  document.getElementById('rd-forgot-link').style.display = _authMode === 'login' ? 'block' : 'none';
+  document.getElementById('authMsg').style.display = 'none';
+}
+
+async function sendRdResetEmail() {
+  const email = document.getElementById('rd-reset-email').value.trim();
+  const btn = document.getElementById('rd-reset-btn');
+  if (!email) { setAuthMsg('error', 'Please enter your email.'); document.getElementById('authMsg').style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href.split('#')[0] });
+  btn.disabled = false; btn.textContent = 'Send Reset Email';
+  setAuthMsg(error ? 'error' : 'success', error ? (error.message || 'Could not send reset email.') : 'Reset link sent — check your email!');
+  document.getElementById('authMsg').style.display = 'block';
+}
+
+async function submitRdNewPassword() {
+  const pw = document.getElementById('rd-new-pw-input').value;
+  const btn = document.getElementById('rd-new-pw-btn');
+  const msgEl = document.getElementById('rd-new-pw-msg');
+  if (pw.length < 6) { msgEl.textContent = 'Password must be at least 6 characters.'; msgEl.className = 'auth-msg error'; msgEl.style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Updating...';
+  const { error } = await sb.auth.updateUser({ password: pw });
+  btn.disabled = false; btn.textContent = 'Update password';
+  if (error) {
+    msgEl.textContent = error.message || 'Could not update password.';
+    msgEl.className = 'auth-msg error';
+  } else {
+    msgEl.textContent = 'Password updated!';
+    msgEl.className = 'auth-msg success';
+    setTimeout(() => { document.getElementById('rd-pw-recovery-overlay').style.display = 'none'; }, 1500);
+  }
+  msgEl.style.display = 'block';
+}
 </script>
+
+<div id="rd-pw-recovery-overlay" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:999;overflow-y:auto;align-items:flex-start;justify-content:center">
+  <div style="max-width:420px;width:100%;margin:0 auto;padding:80px 24px 40px">
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;background:var(--purple-dim);border:1px solid var(--purple-border);color:var(--purple);font-size:11px;font-weight:700;letter-spacing:1.5px;margin-bottom:20px">PASSWORD RESET</div>
+    <h2 style="font-size:28px;font-weight:800;margin-bottom:8px;color:var(--text)">Set your new <span style="color:var(--purple)">password.</span></h2>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:28px">Enter a new password for your ReplyDraft account.</p>
+    <input type="password" id="rd-new-pw-input" class="auth-input" placeholder="Password (min 6 chars)" style="width:100%;margin-bottom:12px">
+    <button class="auth-submit" id="rd-new-pw-btn" onclick="submitRdNewPassword()" style="width:100%">Update password</button>
+    <div id="rd-new-pw-msg" class="auth-msg" style="display:none;margin-top:12px"></div>
+  </div>
+</div>
+
 <script src="ra-widget.js"></script>
 <script>
 initRa({
