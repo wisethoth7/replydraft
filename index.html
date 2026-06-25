@@ -929,7 +929,8 @@ async function sendRdResetEmail() {
   const btn = document.getElementById('rd-reset-btn');
   if (!email) { setAuthMsg('error', 'Please enter your email.'); document.getElementById('authMsg').style.display = 'block'; return; }
   btn.disabled = true; btn.textContent = 'Sending...';
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href.split('#')[0] });
+  const resetRedirect = new URL('reset-password.html', window.location.href).href.split('#')[0];
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: resetRedirect });
   btn.disabled = false; btn.textContent = 'Send Reset Email';
   setAuthMsg(error ? 'error' : 'success', error ? (error.message || 'Could not send reset email.') : 'Reset link sent — check your email!');
   document.getElementById('authMsg').style.display = 'block';
