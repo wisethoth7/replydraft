@@ -314,21 +314,21 @@
 <div id="authModal" onclick="if(event.target===this)closeAuth()" role="dialog" aria-modal="true">
   <div class="auth-box">
     <div class="auth-tabs">
-      <button class="auth-tab active" id="tabSignup" onclick="switchAuthTab('signup')">Sign up free</button>
-      <button class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Log in</button>
+      <button class="auth-tab active" id="tabSignup" onclick="switchAuthTab('signup')" data-i18n="signupFree">Sign up free</button>
+      <button class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')" data-i18n="login">Log in</button>
     </div>
     <div id="authMsg" class="auth-msg error" style="display:none"></div>
-    <input type="email" id="authEmail" class="auth-input" placeholder="Email address" autocomplete="email">
-    <input type="password" id="authPassword" class="auth-input" placeholder="Password (min 6 chars)" autocomplete="new-password">
+    <input type="email" id="authEmail" class="auth-input" placeholder="Email address" data-i18n-ph="emailPh" autocomplete="email">
+    <input type="password" id="authPassword" class="auth-input" placeholder="Password (min 6 chars)" data-i18n-ph="passwordPh" autocomplete="new-password">
     <div id="rd-forgot-link" style="display:none;text-align:right;margin:-6px 0 12px">
-      <a href="#" onclick="showRdForgot();return false;" style="color:var(--text2);font-size:12px">Forgot password?</a>
+      <a href="#" onclick="showRdForgot();return false;" style="color:var(--text2);font-size:12px" data-i18n="forgotPw">Forgot password?</a>
     </div>
     <div id="rd-forgot-section" style="display:none">
-      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Enter your email and we'll send a reset link.</p>
-      <input type="email" id="rd-reset-email" class="auth-input" placeholder="Email address">
-      <button class="auth-submit" id="rd-reset-btn" onclick="sendRdResetEmail()">Send Reset Email</button>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px" data-i18n="resetIntro">Enter your email and we'll send a reset link.</p>
+      <input type="email" id="rd-reset-email" class="auth-input" placeholder="Email address" data-i18n-ph="emailPh">
+      <button class="auth-submit" id="rd-reset-btn" onclick="sendRdResetEmail()" data-i18n="sendReset">Send Reset Email</button>
       <div style="text-align:center;margin-top:8px">
-        <a href="#" onclick="hideRdForgot();return false;" style="color:var(--text2);font-size:12px">← Back</a>
+        <a href="#" onclick="hideRdForgot();return false;" style="color:var(--text2);font-size:12px" data-i18n="backArrow">← Back</a>
       </div>
     </div>
     <button class="auth-submit" id="authSubmitBtn" onclick="submitAuth()">Create free account</button>
@@ -338,28 +338,40 @@
 
 <!-- ACCOUNT PANEL -->
 <div id="accountPanel">
-  <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:12px">YOUR ACCOUNT</div>
+  <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:12px" data-i18n="yourAccount">YOUR ACCOUNT</div>
   <div style="font-size:14px;font-weight:700;margin-bottom:4px;word-break:break-all" id="acctEmail"></div>
   <div style="font-size:12px;color:var(--text2);margin-bottom:12px" id="acctPlanLabel"></div>
   <div id="acctRepliesLabel" style="font-size:13px;margin-bottom:16px"></div>
-  <button id="acctUpgradeBtn" class="upgrade-btn" style="width:100%;margin-bottom:10px;padding:10px 16px;font-size:13px;border-radius:9px" onclick="openUpgrade()">Upgrade to Pro — $9/mo →</button>
-  <button onclick="doSignOut()" style="width:100%;padding:9px;background:transparent;border:1px solid var(--border);color:var(--text2);font-size:13px;border-radius:8px;cursor:pointer;font-family:inherit">Log out</button>
+  <button id="acctUpgradeBtn" class="upgrade-btn" style="width:100%;margin-bottom:10px;padding:10px 16px;font-size:13px;border-radius:9px" onclick="openUpgrade()" data-i18n="upgradeToPro">Upgrade to Pro — $9/mo →</button>
+  <button onclick="doSignOut()" style="width:100%;padding:9px;background:transparent;border:1px solid var(--border);color:var(--text2);font-size:13px;border-radius:8px;cursor:pointer;font-family:inherit" data-i18n="logout">Log out</button>
 </div>
 
 <nav>
   <div class="nav-logo">Reply<span>Draft</span></div>
-  <div class="nav-tagline">AI replies for difficult customer messages</div>
-  <div id="navAuth" style="display:flex;align-items:center;gap:8px">
-    <div class="usage-badge" style="opacity:.3">···</div>
+  <div class="nav-tagline" data-i18n="navTagline">AI replies for difficult customer messages</div>
+  <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+    <select id="ui-lang" onchange="setUiLang(this.value)" aria-label="Language" style="background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:700;padding:6px 8px;font-family:inherit;cursor:pointer">
+      <option value="EN">🇺🇸 EN</option>
+      <option value="AR">🇸🇦 عربي</option>
+      <option value="ES">🇪🇸 ES</option>
+      <option value="FR">🇫🇷 FR</option>
+      <option value="PT">🇧🇷 PT</option>
+      <option value="DE">🇩🇪 DE</option>
+      <option value="ZH">🇨🇳 中文</option>
+      <option value="RU">🇷🇺 RU</option>
+    </select>
+    <div id="navAuth" style="display:flex;align-items:center;gap:8px">
+      <div class="usage-badge" style="opacity:.3">···</div>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">⚡ Results in under 10 seconds</div>
-  <h1>Stop dreading<br>the <span>angry customer</span><br>message.</h1>
-  <p class="hero-sub">Paste the complaint, review, or email. Get 3 professional replies in seconds — pick the tone that fits.</p>
-  <p class="hero-note">Works for <strong>Google reviews · Yelp · DoorDash · emails · DMs · anything</strong></p>
+  <div class="hero-badge" data-i18n="heroBadge">⚡ Results in under 10 seconds</div>
+  <h1 data-i18n-html="heroTitle">Stop dreading<br>the <span>angry customer</span><br>message.</h1>
+  <p class="hero-sub" data-i18n="heroSub">Paste the complaint, review, or email. Get 3 professional replies in seconds — pick the tone that fits.</p>
+  <p class="hero-note" data-i18n-html="heroNote">Works for <strong>Google reviews · Yelp · DoorDash · emails · DMs · anything</strong></p>
 </div>
 
 <!-- TOOL -->
@@ -367,7 +379,7 @@
 
   <!-- Examples -->
   <div class="examples">
-    <div class="examples-label">TRY AN EXAMPLE →</div>
+    <div class="examples-label" data-i18n="examplesLabel">TRY AN EXAMPLE →</div>
     <div class="example-pills">
       <div class="example-pill" onclick="loadExample('review')">⭐ 1-star Google review</div>
       <div class="example-pill" onclick="loadExample('delivery')">🛵 Wrong order delivery</div>
@@ -380,14 +392,14 @@
   <!-- Input card -->
   <div class="input-card">
     <div class="input-header">
-      <span class="input-label">Paste the message or review</span>
+      <span class="input-label" data-i18n="inputLabel">Paste the message or review</span>
       <span class="input-hint" id="char-count">0 characters</span>
     </div>
     <textarea class="message-textarea" id="complaint-input"
       placeholder="e.g. 'Ordered pizza at 7pm. It arrived at 9pm completely cold. Driver was rude when I complained. Never ordering again. Absolute disgrace.'"
       oninput="document.getElementById('char-count').textContent=this.value.length+' characters'"></textarea>
     <div class="context-row">
-      <span class="ctx-label">Source:</span>
+      <span class="ctx-label" data-i18n="sourceLabel">Source:</span>
       <div class="source-pills" id="source-pills">
         <button class="source-pill active" onclick="setSource('Google Review',this)">Google Review</button>
         <button class="source-pill" onclick="setSource('Yelp',this)">Yelp</button>
@@ -398,7 +410,7 @@
       </div>
     </div>
     <div class="context-row">
-      <span class="ctx-label">Business type:</span>
+      <span class="ctx-label" data-i18n="bizLabel">Business type:</span>
       <select class="ctx-select" id="biz-type">
         <option>Restaurant</option>
         <option>Salon / Spa</option>
@@ -409,30 +421,44 @@
         <option>Other service business</option>
       </select>
     </div>
+    <div class="context-row">
+      <span class="ctx-label" data-i18n="replyLangLabel">Reply language:</span>
+      <select class="ctx-select" id="reply-lang">
+        <option value="auto" data-i18n="autoDetect">Auto-detect (match customer)</option>
+        <option value="English">English</option>
+        <option value="Arabic">العربية</option>
+        <option value="Spanish">Español</option>
+        <option value="French">Français</option>
+        <option value="Portuguese">Português</option>
+        <option value="German">Deutsch</option>
+        <option value="Chinese">中文</option>
+        <option value="Russian">Русский</option>
+      </select>
+    </div>
   </div>
 
-  <button class="gen-btn" id="gen-btn" onclick="generateReplies()">
+  <button class="gen-btn" id="gen-btn" onclick="generateReplies()" data-i18n="genBtn">
     ✨ Generate 3 Professional Replies
   </button>
 
   <!-- Upgrade gate (inline — shown when quota exceeded) -->
   <div id="upgradeGate">
     <div style="font-size:36px;margin-bottom:10px">🔒</div>
-    <h3 style="font-size:20px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px">You've used all 5 free replies</h3>
-    <p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:20px">Upgrade to <strong style="color:var(--purple)">ReplyDraft Pro</strong> for unlimited replies — just $9/month.</p>
-    <button class="upgrade-btn" onclick="openUpgrade()" style="padding:12px 28px;font-size:14px;border-radius:10px">Upgrade to Pro — $9/month →</button>
-    <p style="font-size:11px;color:var(--text2);margin-top:12px">Resets on the 1st of each month · Free plan: 5 replies/month</p>
+    <h3 style="font-size:20px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px" data-i18n="gateTitle">You've used all 5 free replies</h3>
+    <p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:20px" data-i18n-html="gateBody">Upgrade to <strong style="color:var(--purple)">ReplyDraft Pro</strong> for unlimited replies — just $9/month.</p>
+    <button class="upgrade-btn" onclick="openUpgrade()" style="padding:12px 28px;font-size:14px;border-radius:10px" data-i18n="gateBtn">Upgrade to Pro — $9/month →</button>
+    <p style="font-size:11px;color:var(--text2);margin-top:12px" data-i18n="gateNote">Resets on the 1st of each month · Free plan: 5 replies/month</p>
   </div>
 
   <!-- Results -->
   <div id="results" style="display:none">
-    <div class="results-label">YOUR 3 REPLIES — PICK THE BEST FIT</div>
+    <div class="results-label" data-i18n="resultsLabel">YOUR 3 REPLIES — PICK THE BEST FIT</div>
     <div class="reply-cards" id="reply-cards"></div>
     <div style="text-align:center;margin-top:20px">
       <button onclick="generateReplies()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit"
         onmouseover="this.style.borderColor='var(--purple-border)';this.style.color='var(--purple)'"
         onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">
-        ↻ Regenerate all 3
+        <span data-i18n="regenBtn">↻ Regenerate all 3</span>
       </button>
     </div>
   </div>
@@ -441,34 +467,34 @@
 
 <!-- WHO IT'S FOR -->
 <div style="padding:32px 24px;text-align:center;border-top:1px solid var(--border)">
-  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--text2);margin-bottom:16px">BUILT FOR</div>
+  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--text2);margin-bottom:16px" data-i18n="builtFor">BUILT FOR</div>
   <div class="who-row">
-    <div class="who-card"><div class="who-icon">🍕</div><div class="who-name">Restaurants</div></div>
-    <div class="who-card"><div class="who-icon">💇</div><div class="who-name">Salons & Spas</div></div>
-    <div class="who-card"><div class="who-icon">🏨</div><div class="who-name">Hotels</div></div>
-    <div class="who-card"><div class="who-icon">🏥</div><div class="who-name">Clinics</div></div>
-    <div class="who-card"><div class="who-icon">🛍️</div><div class="who-name">Retail</div></div>
-    <div class="who-card"><div class="who-icon">💼</div><div class="who-name">Agencies</div></div>
+    <div class="who-card"><div class="who-icon">🍕</div><div class="who-name" data-i18n="whoRestaurants">Restaurants</div></div>
+    <div class="who-card"><div class="who-icon">💇</div><div class="who-name" data-i18n="whoSalons">Salons & Spas</div></div>
+    <div class="who-card"><div class="who-icon">🏨</div><div class="who-name" data-i18n="whoHotels">Hotels</div></div>
+    <div class="who-card"><div class="who-icon">🏥</div><div class="who-name" data-i18n="whoClinics">Clinics</div></div>
+    <div class="who-card"><div class="who-icon">🛍️</div><div class="who-name" data-i18n="whoRetail">Retail</div></div>
+    <div class="who-card"><div class="who-icon">💼</div><div class="who-name" data-i18n="whoAgencies">Agencies</div></div>
   </div>
 </div>
 
 <!-- PRICING -->
 <div class="pricing-strip">
   <div class="pricing-inner">
-    <h2>Simple pricing</h2>
-    <p>Try free — no credit card needed. Upgrade when you're ready.</p>
+    <h2 data-i18n="pricingTitle">Simple pricing</h2>
+    <p data-i18n="pricingSub">Try free — no credit card needed. Upgrade when you're ready.</p>
     <div class="price-row">
       <div class="price-opt">
         <div class="pname">FREE</div>
         <div class="pamt"><sup>$</sup>0</div>
-        <div class="pper">forever</div>
-        <div class="pfeat">✓ 5 replies per month<br>✓ All 3 tones<br>✓ All sources</div>
+        <div class="pper" data-i18n="priceForever">forever</div>
+        <div class="pfeat" data-i18n-html="freeFeat">✓ 5 replies per month<br>✓ All 3 tones<br>✓ All sources</div>
       </div>
       <div class="price-opt popular">
         <div class="pname" style="color:var(--purple)">PRO</div>
         <div class="pamt"><sup>$</sup>9</div>
-        <div class="pper">per month</div>
-        <div class="pfeat">✓ Unlimited replies<br>✓ Custom business tone<br>✓ Reply history saved<br>✓ Priority generation</div>
+        <div class="pper" data-i18n="pricePerMonth">per month</div>
+        <div class="pfeat" data-i18n-html="proFeat">✓ Unlimited replies<br>✓ Custom business tone<br>✓ Reply history saved<br>✓ Priority generation</div>
       </div>
     </div>
   </div>
@@ -479,7 +505,7 @@
   <div style="display:flex;gap:20px">
     <a href="https://ordertaker.niledreamsdigital.com">OrderTaker</a>
     <a href="https://evently.niledreamsdigital.com">Evently</a>
-    <a href="mailto:support@niledreamsdigital.com">Contact</a>
+    <a href="mailto:support@niledreamsdigital.com" data-i18n="contact">Contact</a>
   </div>
   <span>© 2026 Nile Dreams Digital</span>
 </footer>
@@ -492,6 +518,65 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const STRIPE_PRO_URL = 'https://buy.stripe.com/9B6eV6ca8cnXelb9cv18c02';
 
+// ── I18N (same 8 languages as Evently: EN AR ES FR PT DE ZH RU) ─────────────
+const RTL_LANGS = ['AR'];
+const I18N = {
+  EN: { navTagline:"AI replies for difficult customer messages", heroBadge:"⚡ Results in under 10 seconds", heroTitle:"Stop dreading<br>the <span>angry customer</span><br>message.", heroSub:"Paste the complaint, review, or email. Get 3 professional replies in seconds — pick the tone that fits.", heroNote:"Works for <strong>Google reviews · Yelp · DoorDash · emails · DMs · anything</strong>", examplesLabel:"TRY AN EXAMPLE →", inputLabel:"Paste the message or review", sourceLabel:"Source:", bizLabel:"Business type:", replyLangLabel:"Reply language:", autoDetect:"Auto-detect (match customer)", genBtn:"✨ Generate 3 Professional Replies", checking:"Checking…", generating:"Generating…", gateTitle:"You've used all 5 free replies", gateBody:"Upgrade to <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> for unlimited replies — just $9/month.", gateBtn:"Upgrade to Pro — $9/month →", gateNote:"Resets on the 1st of each month · Free plan: 5 replies/month", resultsLabel:"YOUR 3 REPLIES — PICK THE BEST FIT", regenBtn:"↻ Regenerate all 3", builtFor:"BUILT FOR", pricingTitle:"Simple pricing", pricingSub:"Try free — no credit card needed. Upgrade when you're ready.", priceForever:"forever", pricePerMonth:"per month", freeFeat:"✓ 5 replies per month<br>✓ All 3 tones<br>✓ All sources", proFeat:"✓ Unlimited replies<br>✓ Custom business tone<br>✓ Reply history saved<br>✓ Priority generation", yourAccount:"YOUR ACCOUNT", logout:"Log out", signupFree:"Sign up free", login:"Log in", account:"Account", proPlan:"Pro Plan ✓", ofFiveLeft:"of 5 left", emailPh:"Email address", passwordPh:"Password (min 6 chars)", createAccount:"Create free account", upgradeToPro:"Upgrade to Pro — $9/mo →", contact:"Contact" },
+  AR: { navTagline:"ردود ذكية على رسائل العملاء الصعبة", heroBadge:"⚡ نتائج في أقل من 10 ثوانٍ", heroTitle:"لا تقلق بعد الآن<br>من رسالة <span>العميل الغاضب</span>.", heroSub:"الصق الشكوى أو التقييم أو البريد. احصل على 3 ردود احترافية خلال ثوانٍ — اختر النبرة المناسبة.", heroNote:"يعمل مع <strong>تقييمات Google · Yelp · DoorDash · البريد · الرسائل المباشرة · أي شيء</strong>", examplesLabel:"جرّب مثالاً →", inputLabel:"الصق الرسالة أو التقييم", sourceLabel:"المصدر:", bizLabel:"نوع النشاط:", replyLangLabel:"لغة الرد:", autoDetect:"كشف تلقائي (حسب العميل)", genBtn:"✨ أنشئ 3 ردود احترافية", checking:"جارٍ التحقق…", generating:"جارٍ الإنشاء…", gateTitle:"لقد استخدمت كل الردود المجانية الخمسة", gateBody:"قم بالترقية إلى <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> لردود غير محدودة — مقابل 9 دولار شهريًا فقط.", gateBtn:"الترقية إلى Pro — 9 دولار/شهر →", gateNote:"يتجدد في الأول من كل شهر · الخطة المجانية: 5 ردود شهريًا", resultsLabel:"ردودك الثلاثة — اختر الأنسب", regenBtn:"↻ إعادة إنشاء الثلاثة", builtFor:"مصمم لـ", pricingTitle:"تسعير بسيط", pricingSub:"جرّب مجانًا — بدون بطاقة ائتمان. قم بالترقية عندما تكون جاهزًا.", priceForever:"للأبد", pricePerMonth:"شهريًا", freeFeat:"✓ 5 ردود شهريًا<br>✓ جميع النبرات الثلاث<br>✓ جميع المصادر", proFeat:"✓ ردود غير محدودة<br>✓ نبرة مخصصة لنشاطك<br>✓ حفظ سجل الردود<br>✓ إنشاء ذو أولوية", yourAccount:"حسابك", logout:"تسجيل الخروج", signupFree:"اشترك مجانًا", login:"تسجيل الدخول", account:"الحساب", proPlan:"خطة Pro ✓", ofFiveLeft:"من 5 متبقية", emailPh:"البريد الإلكتروني", passwordPh:"كلمة المرور (6 أحرف على الأقل)", createAccount:"إنشاء حساب مجاني", upgradeToPro:"الترقية إلى Pro — 9 دولار/شهر →", contact:"تواصل معنا" },
+  ES: { navTagline:"Respuestas con IA para mensajes difíciles de clientes", heroBadge:"⚡ Resultados en menos de 10 segundos", heroTitle:"Deja de temer<br>el mensaje del <span>cliente enojado</span>.", heroSub:"Pega la queja, reseña o correo. Obtén 3 respuestas profesionales en segundos — elige el tono que encaje.", heroNote:"Funciona con <strong>reseñas de Google · Yelp · DoorDash · correos · DMs · lo que sea</strong>", examplesLabel:"PRUEBA UN EJEMPLO →", inputLabel:"Pega el mensaje o la reseña", sourceLabel:"Fuente:", bizLabel:"Tipo de negocio:", replyLangLabel:"Idioma de respuesta:", autoDetect:"Detección automática (según el cliente)", genBtn:"✨ Generar 3 respuestas profesionales", checking:"Comprobando…", generating:"Generando…", gateTitle:"Has usado tus 5 respuestas gratis", gateBody:"Pásate a <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> para respuestas ilimitadas — solo $9/mes.", gateBtn:"Pasar a Pro — $9/mes →", gateNote:"Se reinicia el día 1 de cada mes · Plan gratis: 5 respuestas/mes", resultsLabel:"TUS 3 RESPUESTAS — ELIGE LA MEJOR", regenBtn:"↻ Regenerar las 3", builtFor:"HECHO PARA", pricingTitle:"Precios simples", pricingSub:"Prueba gratis — sin tarjeta. Mejora cuando quieras.", priceForever:"para siempre", pricePerMonth:"por mes", freeFeat:"✓ 5 respuestas al mes<br>✓ Los 3 tonos<br>✓ Todas las fuentes", proFeat:"✓ Respuestas ilimitadas<br>✓ Tono personalizado<br>✓ Historial guardado<br>✓ Generación prioritaria", yourAccount:"TU CUENTA", logout:"Cerrar sesión", signupFree:"Regístrate gratis", login:"Iniciar sesión", account:"Cuenta", proPlan:"Plan Pro ✓", ofFiveLeft:"de 5 restantes", emailPh:"Correo electrónico", passwordPh:"Contraseña (mín. 6 caracteres)", createAccount:"Crear cuenta gratis", upgradeToPro:"Pasar a Pro — $9/mes →", contact:"Contacto" },
+  FR: { navTagline:"Réponses IA aux messages clients difficiles", heroBadge:"⚡ Résultats en moins de 10 secondes", heroTitle:"Ne redoutez plus<br>le message du <span>client en colère</span>.", heroSub:"Collez la plainte, l'avis ou l'e-mail. Obtenez 3 réponses pro en quelques secondes — choisissez le ton adapté.", heroNote:"Fonctionne pour <strong>avis Google · Yelp · DoorDash · e-mails · DM · tout</strong>", examplesLabel:"ESSAYEZ UN EXEMPLE →", inputLabel:"Collez le message ou l'avis", sourceLabel:"Source :", bizLabel:"Type d'activité :", replyLangLabel:"Langue de réponse :", autoDetect:"Détection auto (selon le client)", genBtn:"✨ Générer 3 réponses professionnelles", checking:"Vérification…", generating:"Génération…", gateTitle:"Vous avez utilisé vos 5 réponses gratuites", gateBody:"Passez à <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> pour des réponses illimitées — seulement 9 $/mois.", gateBtn:"Passer à Pro — 9 $/mois →", gateNote:"Réinitialisé le 1er de chaque mois · Plan gratuit : 5 réponses/mois", resultsLabel:"VOS 3 RÉPONSES — CHOISISSEZ LA MEILLEURE", regenBtn:"↻ Régénérer les 3", builtFor:"CONÇU POUR", pricingTitle:"Tarifs simples", pricingSub:"Essayez gratuitement — sans carte. Améliorez quand vous voulez.", priceForever:"pour toujours", pricePerMonth:"par mois", freeFeat:"✓ 5 réponses par mois<br>✓ Les 3 tons<br>✓ Toutes les sources", proFeat:"✓ Réponses illimitées<br>✓ Ton personnalisé<br>✓ Historique enregistré<br>✓ Génération prioritaire", yourAccount:"VOTRE COMPTE", logout:"Se déconnecter", signupFree:"Inscription gratuite", login:"Se connecter", account:"Compte", proPlan:"Plan Pro ✓", ofFiveLeft:"sur 5 restantes", emailPh:"Adresse e-mail", passwordPh:"Mot de passe (min. 6 caractères)", createAccount:"Créer un compte gratuit", upgradeToPro:"Passer à Pro — 9 $/mois →", contact:"Contact" },
+  PT: { navTagline:"Respostas com IA para mensagens difíceis de clientes", heroBadge:"⚡ Resultados em menos de 10 segundos", heroTitle:"Pare de temer<br>a mensagem do <span>cliente irritado</span>.", heroSub:"Cole a reclamação, avaliação ou e-mail. Receba 3 respostas profissionais em segundos — escolha o tom ideal.", heroNote:"Funciona com <strong>avaliações do Google · Yelp · DoorDash · e-mails · DMs · qualquer coisa</strong>", examplesLabel:"EXPERIMENTE UM EXEMPLO →", inputLabel:"Cole a mensagem ou avaliação", sourceLabel:"Origem:", bizLabel:"Tipo de negócio:", replyLangLabel:"Idioma da resposta:", autoDetect:"Detecção automática (conforme o cliente)", genBtn:"✨ Gerar 3 respostas profissionais", checking:"Verificando…", generating:"Gerando…", gateTitle:"Você usou todas as 5 respostas grátis", gateBody:"Atualize para o <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> para respostas ilimitadas — apenas $9/mês.", gateBtn:"Atualizar para Pro — $9/mês →", gateNote:"Renova no dia 1º de cada mês · Plano grátis: 5 respostas/mês", resultsLabel:"SUAS 3 RESPOSTAS — ESCOLHA A MELHOR", regenBtn:"↻ Gerar as 3 de novo", builtFor:"FEITO PARA", pricingTitle:"Preços simples", pricingSub:"Experimente grátis — sem cartão. Atualize quando quiser.", priceForever:"para sempre", pricePerMonth:"por mês", freeFeat:"✓ 5 respostas por mês<br>✓ Os 3 tons<br>✓ Todas as origens", proFeat:"✓ Respostas ilimitadas<br>✓ Tom personalizado<br>✓ Histórico salvo<br>✓ Geração prioritária", yourAccount:"SUA CONTA", logout:"Sair", signupFree:"Cadastre-se grátis", login:"Entrar", account:"Conta", proPlan:"Plano Pro ✓", ofFiveLeft:"de 5 restantes", emailPh:"Endereço de e-mail", passwordPh:"Senha (mín. 6 caracteres)", createAccount:"Criar conta grátis", upgradeToPro:"Atualizar para Pro — $9/mês →", contact:"Contato" },
+  DE: { navTagline:"KI-Antworten auf schwierige Kundennachrichten", heroBadge:"⚡ Ergebnisse in unter 10 Sekunden", heroTitle:"Keine Angst mehr<br>vor der Nachricht des <span>wütenden Kunden</span>.", heroSub:"Beschwerde, Bewertung oder E-Mail einfügen. 3 professionelle Antworten in Sekunden — wähle den passenden Ton.", heroNote:"Funktioniert für <strong>Google-Bewertungen · Yelp · DoorDash · E-Mails · DMs · alles</strong>", examplesLabel:"BEISPIEL AUSPROBIEREN →", inputLabel:"Nachricht oder Bewertung einfügen", sourceLabel:"Quelle:", bizLabel:"Branche:", replyLangLabel:"Antwortsprache:", autoDetect:"Automatisch erkennen (wie Kunde)", genBtn:"✨ 3 professionelle Antworten erstellen", checking:"Prüfe…", generating:"Erstelle…", gateTitle:"Du hast alle 5 Gratis-Antworten genutzt", gateBody:"Wechsle zu <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> für unbegrenzte Antworten — nur 9 $/Monat.", gateBtn:"Auf Pro upgraden — 9 $/Monat →", gateNote:"Setzt sich am 1. jedes Monats zurück · Gratis-Plan: 5 Antworten/Monat", resultsLabel:"DEINE 3 ANTWORTEN — WÄHLE DIE BESTE", regenBtn:"↻ Alle 3 neu erstellen", builtFor:"GEMACHT FÜR", pricingTitle:"Einfache Preise", pricingSub:"Kostenlos testen — keine Karte nötig. Upgrade jederzeit.", priceForever:"für immer", pricePerMonth:"pro Monat", freeFeat:"✓ 5 Antworten pro Monat<br>✓ Alle 3 Tonarten<br>✓ Alle Quellen", proFeat:"✓ Unbegrenzte Antworten<br>✓ Eigener Geschäftston<br>✓ Antwortverlauf gespeichert<br>✓ Bevorzugte Generierung", yourAccount:"DEIN KONTO", logout:"Abmelden", signupFree:"Kostenlos registrieren", login:"Anmelden", account:"Konto", proPlan:"Pro-Plan ✓", ofFiveLeft:"von 5 übrig", emailPh:"E-Mail-Adresse", passwordPh:"Passwort (mind. 6 Zeichen)", createAccount:"Kostenloses Konto erstellen", upgradeToPro:"Auf Pro upgraden — 9 $/Monat →", contact:"Kontakt" },
+  ZH: { navTagline:"用 AI 回复棘手的客户消息", heroBadge:"⚡ 10 秒内出结果", heroTitle:"不再害怕<br><span>愤怒客户</span>的消息。", heroSub:"粘贴投诉、评价或邮件，几秒内获得 3 条专业回复——选择合适的语气。", heroNote:"适用于 <strong>Google 评价 · Yelp · DoorDash · 邮件 · 私信 · 任何内容</strong>", examplesLabel:"试试示例 →", inputLabel:"粘贴消息或评价", sourceLabel:"来源：", bizLabel:"业务类型：", replyLangLabel:"回复语言：", autoDetect:"自动检测（匹配客户）", genBtn:"✨ 生成 3 条专业回复", checking:"检查中…", generating:"生成中…", gateTitle:"您已用完 5 条免费回复", gateBody:"升级到 <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> 享受无限回复——每月仅 $9。", gateBtn:"升级到 Pro — $9/月 →", gateNote:"每月 1 日重置 · 免费版：每月 5 条回复", resultsLabel:"您的 3 条回复——选择最合适的", regenBtn:"↻ 重新生成 3 条", builtFor:"适用对象", pricingTitle:"简单定价", pricingSub:"免费试用——无需信用卡。随时升级。", priceForever:"永久", pricePerMonth:"每月", freeFeat:"✓ 每月 5 条回复<br>✓ 全部 3 种语气<br>✓ 所有来源", proFeat:"✓ 无限回复<br>✓ 自定义业务语气<br>✓ 保存回复历史<br>✓ 优先生成", yourAccount:"您的账户", logout:"退出登录", signupFree:"免费注册", login:"登录", account:"账户", proPlan:"Pro 套餐 ✓", ofFiveLeft:"/ 5 条剩余", emailPh:"电子邮箱", passwordPh:"密码（至少 6 位）", createAccount:"创建免费账户", upgradeToPro:"升级到 Pro — $9/月 →", contact:"联系我们" },
+  RU: { navTagline:"ИИ-ответы на сложные сообщения клиентов", heroBadge:"⚡ Результат менее чем за 10 секунд", heroTitle:"Перестаньте бояться<br>сообщения <span>разгневанного клиента</span>.", heroSub:"Вставьте жалобу, отзыв или письмо. Получите 3 профессиональных ответа за секунды — выберите подходящий тон.", heroNote:"Работает с <strong>отзывами Google · Yelp · DoorDash · письмами · сообщениями · чем угодно</strong>", examplesLabel:"ПОПРОБУЙТЕ ПРИМЕР →", inputLabel:"Вставьте сообщение или отзыв", sourceLabel:"Источник:", bizLabel:"Тип бизнеса:", replyLangLabel:"Язык ответа:", autoDetect:"Автоопределение (как у клиента)", genBtn:"✨ Создать 3 профессиональных ответа", checking:"Проверка…", generating:"Создание…", gateTitle:"Вы использовали все 5 бесплатных ответов", gateBody:"Перейдите на <strong style=\"color:var(--purple)\">ReplyDraft Pro</strong> для безлимитных ответов — всего $9/мес.", gateBtn:"Перейти на Pro — $9/мес →", gateNote:"Сбрасывается 1-го числа каждого месяца · Бесплатно: 5 ответов/мес", resultsLabel:"ВАШИ 3 ОТВЕТА — ВЫБЕРИТЕ ЛУЧШИЙ", regenBtn:"↻ Сгенерировать заново", builtFor:"СОЗДАНО ДЛЯ", pricingTitle:"Простые цены", pricingSub:"Попробуйте бесплатно — без карты. Обновитесь когда угодно.", priceForever:"навсегда", pricePerMonth:"в месяц", freeFeat:"✓ 5 ответов в месяц<br>✓ Все 3 тона<br>✓ Все источники", proFeat:"✓ Безлимитные ответы<br>✓ Свой тон бизнеса<br>✓ История ответов<br>✓ Приоритетная генерация", yourAccount:"ВАШ АККАУНТ", logout:"Выйти", signupFree:"Регистрация бесплатно", login:"Войти", account:"Аккаунт", proPlan:"Тариф Pro ✓", ofFiveLeft:"из 5 осталось", emailPh:"Электронная почта", passwordPh:"Пароль (мин. 6 символов)", createAccount:"Создать бесплатный аккаунт", upgradeToPro:"Перейти на Pro — $9/мес →", contact:"Контакты" },
+};
+let UI_LANG = localStorage.getItem('rd_lang') || 'EN';
+function t(key) { return (I18N[UI_LANG] && I18N[UI_LANG][key] != null) ? I18N[UI_LANG][key] : (I18N.EN[key] || ''); }
+function applyI18n() {
+  document.documentElement.lang = UI_LANG.toLowerCase();
+  document.documentElement.dir = RTL_LANGS.includes(UI_LANG) ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el => { const v = t(el.getAttribute('data-i18n')); if (v) el.textContent = v; });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => { const v = t(el.getAttribute('data-i18n-html')); if (v) el.innerHTML = v; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { const v = t(el.getAttribute('data-i18n-ph')); if (v) el.placeholder = v; });
+  const sel = document.getElementById('ui-lang'); if (sel) sel.value = UI_LANG;
+  // Re-render JS-driven UI so nothing leaks English
+  if (currentUser) showLoggedInNav(); else showLoggedOutNav();
+  if (typeof switchAuthTab === 'function') switchAuthTab(_authMode);
+}
+function setUiLang(code) { UI_LANG = code; localStorage.setItem('rd_lang', code); applyI18n(); }
+Object.assign(I18N.EN, { haveAccountQ:"Already have an account?", newHereQ:"New here?" });
+Object.assign(I18N.AR, { haveAccountQ:"لديك حساب بالفعل؟", newHereQ:"جديد هنا؟" });
+Object.assign(I18N.ES, { haveAccountQ:"¿Ya tienes una cuenta?", newHereQ:"¿Nuevo aquí?" });
+Object.assign(I18N.FR, { haveAccountQ:"Vous avez déjà un compte ?", newHereQ:"Nouveau ici ?" });
+Object.assign(I18N.PT, { haveAccountQ:"Já tem uma conta?", newHereQ:"Novo por aqui?" });
+Object.assign(I18N.DE, { haveAccountQ:"Schon ein Konto?", newHereQ:"Neu hier?" });
+Object.assign(I18N.ZH, { haveAccountQ:"已有账户？", newHereQ:"第一次来？" });
+Object.assign(I18N.RU, { haveAccountQ:"Уже есть аккаунт?", newHereQ:"Впервые здесь?" });
+Object.assign(I18N.EN, { whoRestaurants:"Restaurants", whoSalons:"Salons & Spas", whoHotels:"Hotels", whoClinics:"Clinics", whoRetail:"Retail", whoAgencies:"Agencies" });
+Object.assign(I18N.AR, { whoRestaurants:"المطاعم", whoSalons:"الصالونات والسبا", whoHotels:"الفنادق", whoClinics:"العيادات", whoRetail:"التجزئة", whoAgencies:"الوكالات" });
+Object.assign(I18N.ES, { whoRestaurants:"Restaurantes", whoSalons:"Salones y spas", whoHotels:"Hoteles", whoClinics:"Clínicas", whoRetail:"Comercios", whoAgencies:"Agencias" });
+Object.assign(I18N.FR, { whoRestaurants:"Restaurants", whoSalons:"Salons et spas", whoHotels:"Hôtels", whoClinics:"Cliniques", whoRetail:"Commerces", whoAgencies:"Agences" });
+Object.assign(I18N.PT, { whoRestaurants:"Restaurantes", whoSalons:"Salões e spas", whoHotels:"Hotéis", whoClinics:"Clínicas", whoRetail:"Varejo", whoAgencies:"Agências" });
+Object.assign(I18N.DE, { whoRestaurants:"Restaurants", whoSalons:"Salons & Spas", whoHotels:"Hotels", whoClinics:"Kliniken", whoRetail:"Einzelhandel", whoAgencies:"Agenturen" });
+Object.assign(I18N.ZH, { whoRestaurants:"餐厅", whoSalons:"美容美发与水疗", whoHotels:"酒店", whoClinics:"诊所", whoRetail:"零售", whoAgencies:"代理机构" });
+Object.assign(I18N.RU, { whoRestaurants:"Рестораны", whoSalons:"Салоны и спа", whoHotels:"Отели", whoClinics:"Клиники", whoRetail:"Розница", whoAgencies:"Агентства" });
+Object.assign(I18N.EN, { proPlanFull:"✓ Pro Plan — Unlimited replies", freePlanLabel:"Free Plan", repliesLeftMonth:"of 5 replies left this month", loadingWord:"Loading…" });
+Object.assign(I18N.AR, { proPlanFull:"✓ خطة Pro — ردود غير محدودة", freePlanLabel:"الخطة المجانية", repliesLeftMonth:"من 5 ردود متبقية هذا الشهر", loadingWord:"جارٍ التحميل…" });
+Object.assign(I18N.ES, { proPlanFull:"✓ Plan Pro — Respuestas ilimitadas", freePlanLabel:"Plan gratuito", repliesLeftMonth:"de 5 respuestas restantes este mes", loadingWord:"Cargando…" });
+Object.assign(I18N.FR, { proPlanFull:"✓ Plan Pro — Réponses illimitées", freePlanLabel:"Plan gratuit", repliesLeftMonth:"sur 5 réponses restantes ce mois-ci", loadingWord:"Chargement…" });
+Object.assign(I18N.PT, { proPlanFull:"✓ Plano Pro — Respostas ilimitadas", freePlanLabel:"Plano grátis", repliesLeftMonth:"de 5 respostas restantes este mês", loadingWord:"Carregando…" });
+Object.assign(I18N.DE, { proPlanFull:"✓ Pro-Plan — Unbegrenzte Antworten", freePlanLabel:"Gratis-Plan", repliesLeftMonth:"von 5 Antworten diesen Monat übrig", loadingWord:"Lädt…" });
+Object.assign(I18N.ZH, { proPlanFull:"✓ Pro 套餐 — 无限回复", freePlanLabel:"免费套餐", repliesLeftMonth:"/ 5 条本月剩余回复", loadingWord:"加载中…" });
+Object.assign(I18N.RU, { proPlanFull:"✓ Тариф Pro — Безлимитные ответы", freePlanLabel:"Бесплатный тариф", repliesLeftMonth:"из 5 ответов осталось в этом месяце", loadingWord:"Загрузка…" });
+Object.assign(I18N.EN, { creatingAccount:"Creating account…", loggingIn:"Logging in…", sendReset:"Send Reset Email", sending:"Sending…", forgotPw:"Forgot password?", resetIntro:"Enter your email and we'll send a reset link.", backArrow:"← Back" });
+Object.assign(I18N.AR, { creatingAccount:"جارٍ إنشاء الحساب…", loggingIn:"جارٍ تسجيل الدخول…", sendReset:"إرسال رابط إعادة التعيين", sending:"جارٍ الإرسال…", forgotPw:"نسيت كلمة المرور؟", resetIntro:"أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.", backArrow:"→ رجوع" });
+Object.assign(I18N.ES, { creatingAccount:"Creando cuenta…", loggingIn:"Iniciando sesión…", sendReset:"Enviar enlace", sending:"Enviando…", forgotPw:"¿Olvidaste tu contraseña?", resetIntro:"Ingresa tu email y te enviaremos un enlace para restablecerla.", backArrow:"← Volver" });
+Object.assign(I18N.FR, { creatingAccount:"Création du compte…", loggingIn:"Connexion…", sendReset:"Envoyer le lien", sending:"Envoi…", forgotPw:"Mot de passe oublié ?", resetIntro:"Saisissez votre e-mail et nous vous enverrons un lien de réinitialisation.", backArrow:"← Retour" });
+Object.assign(I18N.PT, { creatingAccount:"Criando conta…", loggingIn:"Entrando…", sendReset:"Enviar link", sending:"Enviando…", forgotPw:"Esqueceu a senha?", resetIntro:"Digite seu e-mail e enviaremos um link de redefinição.", backArrow:"← Voltar" });
+Object.assign(I18N.DE, { creatingAccount:"Konto wird erstellt…", loggingIn:"Anmeldung…", sendReset:"Link senden", sending:"Senden…", forgotPw:"Passwort vergessen?", resetIntro:"Gib deine E-Mail ein und wir senden dir einen Link zum Zurücksetzen.", backArrow:"← Zurück" });
+Object.assign(I18N.ZH, { creatingAccount:"正在创建账户…", loggingIn:"正在登录…", sendReset:"发送重置链接", sending:"发送中…", forgotPw:"忘记密码？", resetIntro:"输入您的邮箱，我们将发送重置链接。", backArrow:"← 返回" });
+Object.assign(I18N.RU, { creatingAccount:"Создание аккаунта…", loggingIn:"Вход…", sendReset:"Отправить ссылку", sending:"Отправка…", forgotPw:"Забыли пароль?", resetIntro:"Введите e-mail, и мы отправим ссылку для сброса.", backArrow:"← Назад" });
+
 // ── AUTH STATE ────────────────────────────────────────────────────────────
 let currentUser = null;
 let currentPlan = 'free';
@@ -500,23 +585,23 @@ let currentRemaining = null; // null = unknown/Pro, number = Free remaining
 // ── NAV ──────────────────────────────────────────────────────────────────
 function showLoggedOutNav() {
   document.getElementById('navAuth').innerHTML =
-    '<button class="nav-login-btn" onclick="openAuth(\'login\')">Log in</button>' +
-    '<button class="nav-signup-btn" onclick="openAuth(\'signup\')">Sign up free</button>';
+    '<button class="nav-login-btn" onclick="openAuth(\'login\')">' + t('login') + '</button>' +
+    '<button class="nav-signup-btn" onclick="openAuth(\'signup\')">' + t('signupFree') + '</button>';
 }
 
 function showLoggedInNav() {
   let badgeHtml;
   if (currentPlan === 'pro') {
-    badgeHtml = '<div class="usage-badge" style="color:var(--purple);border-color:rgba(139,92,246,.3)">Pro Plan ✓</div>';
+    badgeHtml = '<div class="usage-badge" style="color:var(--purple);border-color:rgba(139,92,246,.3)">' + t('proPlan') + '</div>';
   } else {
     const rem = currentRemaining;
     const cls = 'usage-badge' + (rem !== null && rem <= 0 ? ' full' : rem !== null && rem <= 1 ? ' warn' : '');
-    const txt = rem !== null ? rem + ' of 5 left' : '···';
+    const txt = rem !== null ? rem + ' ' + t('ofFiveLeft') : '···';
     badgeHtml = '<div class="' + cls + '" id="usageBadge">' + txt + '</div>';
   }
   document.getElementById('navAuth').innerHTML =
     badgeHtml +
-    '<button class="nav-account-btn" id="navAccountBtn" onclick="toggleAccountPanel()">Account</button>';
+    '<button class="nav-account-btn" id="navAccountBtn" onclick="toggleAccountPanel()">' + t('account') + '</button>';
 }
 
 function updateUsageBadge() {
@@ -524,7 +609,7 @@ function updateUsageBadge() {
   const el = document.getElementById('usageBadge');
   if (!el) return;
   const rem = currentRemaining;
-  el.textContent = rem !== null ? rem + ' of 5 left' : '···';
+  el.textContent = rem !== null ? rem + ' ' + t('ofFiveLeft') : '···';
   el.className = 'usage-badge' + (rem !== null && rem <= 0 ? ' full' : rem !== null && rem <= 1 ? ' warn' : '');
 }
 
@@ -538,7 +623,7 @@ function toggleAccountPanel() {
   if (currentUser) {
     document.getElementById('acctEmail').textContent = currentUser.email;
     document.getElementById('acctPlanLabel').textContent =
-      currentPlan === 'pro' ? '✓ Pro Plan — Unlimited replies' : 'Free Plan';
+      currentPlan === 'pro' ? t('proPlanFull') : t('freePlanLabel');
     const replEl = document.getElementById('acctRepliesLabel');
     const upBtn  = document.getElementById('acctUpgradeBtn');
     if (currentPlan === 'pro') {
@@ -547,8 +632,8 @@ function toggleAccountPanel() {
     } else {
       replEl.style.display = 'block';
       replEl.textContent = currentRemaining !== null
-        ? currentRemaining + ' of 5 replies left this month'
-        : 'Loading…';
+        ? currentRemaining + ' ' + t('repliesLeftMonth')
+        : t('loadingWord');
       replEl.style.color = currentRemaining !== null && currentRemaining <= 0
         ? 'var(--red)' : 'var(--text2)';
       upBtn.style.display = 'block';
@@ -603,12 +688,12 @@ function switchAuthTab(mode) {
   document.getElementById('tabSignup').classList.toggle('active', mode === 'signup');
   document.getElementById('tabLogin').classList.toggle('active',  mode === 'login');
   document.getElementById('authSubmitBtn').textContent =
-    mode === 'signup' ? 'Create free account' : 'Log in';
+    mode === 'signup' ? t('createAccount') : t('login');
   document.getElementById('authPassword').setAttribute(
     'autocomplete', mode === 'signup' ? 'new-password' : 'current-password');
   document.getElementById('authSwitch').innerHTML = mode === 'signup'
-    ? 'Already have an account? <a onclick="switchAuthTab(\'login\')" style="color:var(--purple);cursor:pointer">Log in</a>'
-    : 'New here? <a onclick="switchAuthTab(\'signup\')" style="color:var(--purple);cursor:pointer">Sign up free</a>';
+    ? t('haveAccountQ') + ' <a onclick="switchAuthTab(\'login\')" style="color:var(--purple);cursor:pointer">' + t('login') + '</a>'
+    : t('newHereQ') + ' <a onclick="switchAuthTab(\'signup\')" style="color:var(--purple);cursor:pointer">' + t('signupFree') + '</a>';
   hideRdForgot();
 }
 
@@ -623,7 +708,7 @@ async function submitAuth() {
   }
 
   btn.disabled    = true;
-  btn.textContent = _authMode === 'signup' ? 'Creating account…' : 'Logging in…';
+  btn.textContent = _authMode === 'signup' ? t('creatingAccount') : t('loggingIn');
   document.getElementById('authMsg').style.display = 'none';
 
   const { data, error } = _authMode === 'signup'
@@ -631,7 +716,7 @@ async function submitAuth() {
     : await sb.auth.signInWithPassword({ email, password });
 
   btn.disabled    = false;
-  btn.textContent = _authMode === 'signup' ? 'Create free account' : 'Log in';
+  btn.textContent = _authMode === 'signup' ? t('createAccount') : t('login');
 
   if (error) { setAuthMsg('error', error.message); return; }
 
@@ -752,14 +837,14 @@ async function generateReplies() {
   document.getElementById('results').style.display = 'none';
 
   btn.disabled  = true;
-  btn.innerHTML = '<span class="spinner"></span> Checking…';
+  btn.innerHTML = '<span class="spinner"></span> ' + t('checking');
 
   // Atomic usage check + increment via RPC
   const { data: gate, error: gateErr } = await sb.rpc('replydraft_use_reply');
 
   if (gateErr) {
     btn.disabled  = false;
-    btn.innerHTML = '✨ Generate 3 Professional Replies';
+    btn.innerHTML = t('genBtn');
     showGenError('Error checking quota — please try again.');
     return;
   }
@@ -769,7 +854,7 @@ async function generateReplies() {
     currentRemaining = 0;
     updateUsageBadge();
     btn.disabled  = false;
-    btn.innerHTML = '✨ Generate 3 Professional Replies';
+    btn.innerHTML = t('genBtn');
     upgradeGate.classList.add('visible');
     upgradeGate.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
@@ -780,9 +865,15 @@ async function generateReplies() {
   currentRemaining = typeof gate.remaining === 'number' ? gate.remaining : null;
   updateUsageBadge();
 
-  btn.innerHTML = '<span class="spinner"></span> Generating…';
+  btn.innerHTML = '<span class="spinner"></span> ' + t('generating');
 
   const bizType = document.getElementById('biz-type').value;
+
+  // Reply language: 'auto' → detect from the customer message; otherwise force a language.
+  const replyLang = (document.getElementById('reply-lang') || {}).value || 'auto';
+  const langDirective = replyLang === 'auto'
+    ? 'Detect the language of the customer\'s message and write ALL 3 replies in that same language. The tone labels (apologetic/professional/firm) still apply, just expressed in the detected language.'
+    : `Write ALL 3 replies in ${replyLang}, regardless of the language of the customer's message. The tone labels (apologetic/professional/firm) still apply, just expressed in ${replyLang}.`;
 
   try {
     const response = await fetch('https://hvyfeebazmiqateniupm.supabase.co/functions/v1/ra-chat', {
@@ -795,6 +886,9 @@ You will receive a customer complaint, review, or message. Write exactly 3 reply
 1. APOLOGETIC — Warm, empathetic, takes full responsibility, apologizes sincerely
 2. PROFESSIONAL — Balanced and calm, acknowledges the issue, explains what happened without being defensive
 3. FIRM — Respectful but confident, gently pushes back if the complaint seems unfair or exaggerated
+
+LANGUAGE:
+- ${langDirective}
 
 RULES:
 - Keep each reply under 120 words
@@ -835,7 +929,7 @@ Respond with ONLY a JSON object, no markdown, no explanation:
   }
 
   btn.disabled  = false;
-  btn.innerHTML = '✨ Generate 3 Professional Replies';
+  btn.innerHTML = t('genBtn');
 }
 
 function showGenError(msg) {
@@ -935,9 +1029,9 @@ async function sendRdResetEmail() {
   const email = document.getElementById('rd-reset-email').value.trim();
   const btn = document.getElementById('rd-reset-btn');
   if (!email) { setAuthMsg('error', 'Please enter your email.'); document.getElementById('authMsg').style.display = 'block'; return; }
-  btn.disabled = true; btn.textContent = 'Sending...';
+  btn.disabled = true; btn.textContent = t('sending');
   const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://replydraft.niledreamsdigital.com/reset-password' });
-  btn.disabled = false; btn.textContent = 'Send Reset Email';
+  btn.disabled = false; btn.textContent = t('sendReset');
   setAuthMsg(error ? 'error' : 'success', error ? (error.message || 'Could not send reset email.') : 'Reset link sent — check your email!');
   document.getElementById('authMsg').style.display = 'block';
 }
@@ -960,6 +1054,9 @@ async function submitRdNewPassword() {
   }
   msgEl.style.display = 'block';
 }
+
+// Apply saved UI language on first load (after all state vars are initialized)
+applyI18n();
 </script>
 
 <div id="rd-pw-recovery-overlay" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:999;overflow-y:auto;align-items:flex-start;justify-content:center">
