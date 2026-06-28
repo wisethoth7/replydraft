@@ -730,9 +730,9 @@ function setSource(src, btn) {
 
 // ── GENERATE REPLIES ──────────────────────────────────────────────────────
 const TONES = [
-  { key: 'apologetic', label: 'Apologetic',   desc: 'Empathetic, takes full ownership',        cssClass: 'apologetic' },
-  { key: 'neutral',    label: 'Professional', desc: 'Balanced, addresses the issue calmly',    cssClass: 'neutral' },
-  { key: 'firm',       label: 'Firm',         desc: 'Respectful but sets clear boundaries',    cssClass: 'firm' },
+  { key: 'apologetic',  srcKeys: ['apologetic'],               label: 'Apologetic',   desc: 'Empathetic, takes full ownership',     cssClass: 'apologetic' },
+  { key: 'professional', srcKeys: ['professional', 'neutral'], label: 'Professional', desc: 'Balanced, addresses the issue calmly', cssClass: 'neutral' },
+  { key: 'firm',        srcKeys: ['firm'],                     label: 'Firm',         desc: 'Respectful but sets clear boundaries', cssClass: 'firm' },
 ];
 
 async function generateReplies() {
@@ -848,7 +848,7 @@ function renderReplies(replies) {
   const container = document.getElementById('reply-cards');
 
   container.innerHTML = TONES.map(tone => {
-    const text = replies[tone.key] || 'No reply generated for this tone.';
+    const text = tone.srcKeys.map(k => replies[k]).find(v => v) || 'No reply generated for this tone.';
     return `<div class="reply-card">
       <div class="reply-header">
         <span class="tone-badge ${tone.cssClass}">${tone.label}</span>
