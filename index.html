@@ -450,15 +450,15 @@
 
   <!-- B1: static "See it in action" sample — no API call, visible logged out -->
   <div id="demoSection" style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border)">
-    <div class="results-label" data-i18n="demoLabel">SEE IT IN ACTION — A REAL EXAMPLE</div>
+    <div class="results-label" data-i18n="demoLabel">SEE IT IN ACTION — REAL OUTPUT</div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
       <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:8px"
-           data-i18n="demoReviewLabel">⭐ 1-STAR GOOGLE REVIEW</div>
+           data-i18n="demoReviewLabel">⭐ EXAMPLE 1-STAR GOOGLE REVIEW</div>
       <div id="demoReview" style="font-size:14px;line-height:1.7;color:var(--text)"></div>
     </div>
     <div class="reply-cards" id="demo-cards"></div>
     <p style="text-align:center;font-size:11px;color:var(--text2);margin-top:14px"
-       data-i18n="demoNote">This is a sample of ReplyDraft's output. Paste your own message above to generate 3 replies.</p>
+       data-i18n="demoNote">Real, unedited output from ReplyDraft, generated from the example review above. Paste your own message to get 3 replies for it.</p>
   </div>
 
   <!-- Upgrade gate (inline — shown when quota exceeded) -->
@@ -600,25 +600,25 @@ Object.assign(I18N.EN, {
   pricingSub:"Free account — 5 replies a month. No credit card.",
   startFree:"Start free", goPro:"Go Pro — $9/mo",
   genAuthNote:"Free account required — takes 10 seconds.",
-  demoLabel:"SEE IT IN ACTION — A REAL EXAMPLE",
-  demoReviewLabel:"⭐ 1-STAR GOOGLE REVIEW",
-  demoNote:"This is a sample of ReplyDraft's output. Paste your own message above to generate 3 replies."
+  demoLabel:"SEE IT IN ACTION — REAL OUTPUT",
+  demoReviewLabel:"⭐ EXAMPLE 1-STAR GOOGLE REVIEW",
+  demoNote:"Real, unedited output from ReplyDraft, generated from the example review above. Paste your own message to get 3 replies for it."
 });
 Object.assign(I18N.AR, {
   startFree:"ابدأ مجانًا", goPro:"اشترك في Pro — 9 دولار/شهر",
   genAuthNote:"يتطلب حسابًا مجانيًا — لا يستغرق سوى 10 ثوانٍ.",
   pricingSub:"حساب مجاني — 5 ردود شهريًا. بدون بطاقة ائتمان.",
-  demoLabel:"شاهدها أثناء العمل — مثال حقيقي",
-  demoReviewLabel:"⭐ تقييم بنجمة واحدة على Google",
-  demoNote:"هذا نموذج لمخرجات ReplyDraft. الصق رسالتك في الأعلى لإنشاء 3 ردود."
+  demoLabel:"شاهدها أثناء العمل — مخرجات حقيقية",
+  demoReviewLabel:"⭐ مثال على تقييم بنجمة واحدة على Google",
+  demoNote:"مخرجات حقيقية من ReplyDraft دون تعديل، أُنشئت من التقييم المثال أعلاه. الصق رسالتك للحصول على 3 ردود عليها."
 });
 Object.assign(I18N.ES, {
   startFree:"Empieza gratis", goPro:"Hazte Pro — $9/mes",
   genAuthNote:"Se necesita una cuenta gratuita — tarda 10 segundos.",
   pricingSub:"Cuenta gratis — 5 respuestas al mes. Sin tarjeta.",
-  demoLabel:"VELO EN ACCIÓN — UN EJEMPLO REAL",
-  demoReviewLabel:"⭐ RESEÑA DE 1 ESTRELLA EN GOOGLE",
-  demoNote:"Este es un ejemplo de lo que genera ReplyDraft. Pega tu propio mensaje arriba para obtener 3 respuestas."
+  demoLabel:"VELO EN ACCIÓN — RESULTADO REAL",
+  demoReviewLabel:"⭐ EJEMPLO DE RESEÑA DE 1 ESTRELLA EN GOOGLE",
+  demoNote:"Resultado real de ReplyDraft, sin editar, generado a partir de la reseña de ejemplo de arriba. Pega tu propio mensaje para obtener 3 respuestas."
 });
 Object.assign(I18N.FR, { pricingSub:"Compte gratuit — 5 réponses par mois. Sans carte." });
 Object.assign(I18N.PT, { pricingSub:"Conta grátis — 5 respostas por mês. Sem cartão." });
@@ -626,26 +626,27 @@ Object.assign(I18N.DE, { pricingSub:"Kostenloses Konto — 5 Antworten pro Monat
 Object.assign(I18N.ZH, { pricingSub:"免费账户——每月 5 条回复。无需信用卡。" });
 Object.assign(I18N.RU, { pricingSub:"Бесплатный аккаунт — 5 ответов в месяц. Без карты." });
 
-// ── B1: the sample itself. EN/AR/ES localised; others show the EN sample.
-//    Replies obey the generator's own rules (under 120 words, same 3 tones).
+// B1: the sample itself — REAL output from ReplyDraft's own generator
+// (ra-chat edge function, Google Review / Restaurant defaults), pasted
+// verbatim from one run per language. EN/AR/ES; others show the EN run.
 const DEMO_SAMPLE = {
   EN: {
     review: "Ordered here twice and both times the food was cold by the time it arrived. I live 10 minutes away. Staff seemed disinterested when I called to complain. Won't be ordering again. Extremely disappointed.",
-    apologetic: "I'm so sorry — twice is twice too many, and cold food after a 10-minute drive is on us, not on you. I'm just as sorry about the call; being brushed off when you took the time to tell us is the part that bothers me most. I've shared this with our kitchen and the team who answer the phone so the handover gets tighter. If you'd ever be willing to give us one more try, please ask for me by name and I'll look after the order myself. Thank you for being honest with us.",
-    professional: "Thank you for taking the time to write this. Cold food on both orders points to something in our packaging and handover to the driver, and that's being reviewed this week. I've also raised the phone call with the team — when a customer calls to tell us something is wrong, that call should end with a fix, not a shrug. I appreciate you flagging both issues rather than leaving quietly. If you'd like to talk it through directly, we'd welcome the chance.",
-    firm: "Thank you for the feedback — the cold food and the way your call was handled are both fair points, and we're looking at our packaging and our phone process because of them. I would gently say that we never heard from you after that call, so we had no way to put either order right at the time. The offer still stands: contact us with the order details and we'll make it good. We'd rather fix it than lose you over it."
+    apologetic: "We're truly sorry for letting you down — not once, but twice. Cold food is never acceptable, and we completely understand your frustration. There's no excuse for that, and we're equally sorry that our team didn't respond with the care and urgency you deserved when you called. We take this seriously and will be addressing both the delivery process and how our staff handles complaints. We'd love the chance to make this right — please reach out to us directly. Thank you for giving us the opportunity to do better.",
+    professional: "Thank you for sharing your experience with us. Receiving cold food on two separate occasions is genuinely disappointing, and we understand why this has affected your confidence in us. A 10-minute delivery window should absolutely keep food at the right temperature, and we'll be reviewing our packaging and dispatch process. We also take feedback about staff interactions seriously and will follow up internally. We'd welcome the chance to speak with you directly to understand what went wrong and work toward a resolution.",
+    firm: "Thank you for your honest feedback — we take delivery quality seriously and a 10-minute distance should never result in cold food. We'd like to understand the specifics, as factors like order timing and packaging can sometimes vary. Regarding your call, we're sorry if the response felt dismissive — that's not the standard we hold our team to. We genuinely want to resolve this and would appreciate the chance to look into both visits properly. Please reach out to us directly so we can investigate and respond appropriately."
   },
   AR: {
     review: "طلبت من هنا مرتين وفي كلتا المرتين وصل الطعام باردًا. أسكن على بعد 10 دقائق فقط. ولم يبدُ أن الموظفين مهتمون عندما اتصلت لأشتكي. لن أطلب مرة أخرى. خيبة أمل كبيرة.",
-    apologetic: "أعتذر بصدق — مرتان أكثر من اللازم، ووصول الطعام باردًا بعد مسافة 10 دقائق مسؤوليتنا نحن لا مسؤوليتك. ويحزنني أكثر ما حدث في الاتصال؛ فمن تكبّد عناء إبلاغنا يستحق إنصاتًا حقيقيًا. لقد نقلت ملاحظتك إلى المطبخ وإلى فريق الهاتف لتحسين التسليم. وإن أردت منحنا فرصة أخرى، اطلبني بالاسم وسأتابع طلبك بنفسي. شكرًا لصراحتك معنا.",
-    professional: "شكرًا لك على وقتك في كتابة هذا. وصول الطعام باردًا في الطلبين يشير إلى خلل في التغليف وفي تسليم الطلب للسائق، ونحن نراجع ذلك هذا الأسبوع. كما أثرت موضوع الاتصال مع الفريق — فالمكالمة التي يبلّغنا فيها العميل بوجود مشكلة يجب أن تنتهي بحل. أقدّر أنك أخبرتنا بالأمرين بدلًا من الانصراف بصمت. وإن رغبت في الحديث معنا مباشرة، فنحن نرحب بذلك.",
-    firm: "شكرًا على ملاحظاتك — برودة الطعام وطريقة التعامل مع مكالمتك ملاحظتان عادلتان، ونحن نراجع التغليف وإجراءات الهاتف بسببهما. وأود أن أذكر بلطف أننا لم نسمع منك بعد تلك المكالمة، فلم تكن لدينا وسيلة لتصحيح أي من الطلبين في وقتها. والعرض ما زال قائمًا: تواصل معنا ببيانات الطلب وسنصحح الأمر. نحن نفضّل إصلاح الخطأ على أن نخسرك بسببه."
+    apologetic: "نأسف جدًا لهذه التجربة المحبطة! وصول الطعام باردًا مرتين متتاليتين أمر غير مقبول تمامًا، وتفهّم موظفينا لشكواك كان يجب أن يكون أفضل بكثير. أنت تستحق خدمة ممتازة في كل مرة. نأخذ ملاحظتك بجدية تامة وسنعمل على تحسين تجربة التوصيل والتعامل مع الشكاوى فورًا. نتمنى أن تمنحنا فرصة أخرى لنعوّضك ونُثبت لك أننا أفضل من ذلك. يمكنك التواصل معنا مباشرة وسيسعدنا خدمتك.",
+    professional: "شكرًا لمشاركتك تجربتك معنا. وصول الطعام باردًا رغم قِصَر المسافة يشير إلى خلل في عملية التغليف أو التوصيل، وهذا أمر نأخذه بجدية. كان ينبغي أيضًا أن يتعامل فريقنا مع شكواك باهتمام أكبر. نعمل على مراجعة هذه النقاط لضمان عدم تكرارها. نقدّر صراحتك ونودّ التواصل معك مباشرة لمعرفة تفاصيل أكثر وتحسين خدمتنا.",
+    firm: "نقدّر صراحتك ونأسف لأن تجربتيك لم تكونا بالمستوى المأمول. غير أن التوصيل خلال 10 دقائق يجب أن يُبقي الطعام ساخنًا، وهذا ما نسعى إليه دائمًا. نودّ فهم ما حدث بالتحديد لأن هذا لا يعكس معيارنا المعتاد. إذا تواصلت معنا مباشرة سنتمكن من التحقيق في الأمر بشكل صحيح. رأيك يهمنا ونتمنى أن تمنحنا فرصة لتصحيح الوضع."
   },
   ES: {
     review: "Pedí aquí dos veces y las dos veces la comida llegó fría. Vivo a 10 minutos. El personal pareció desinteresado cuando llamé para quejarme. No volveré a pedir. Enormemente decepcionado.",
-    apologetic: "Lo siento mucho: dos veces ya es demasiado, y que la comida llegue fría a 10 minutos de distancia es culpa nuestra, no suya. Lo de la llamada me pesa aún más; quien se toma la molestia de avisarnos merece que le escuchemos de verdad. Ya lo he comentado con la cocina y con el equipo que atiende el teléfono para ajustar la entrega al repartidor. Si algún día quisiera darnos otra oportunidad, pregunte por mí y yo me encargo personalmente de su pedido. Gracias por su sinceridad.",
-    professional: "Gracias por tomarse el tiempo de escribirnos. Que la comida llegara fría en los dos pedidos apunta a nuestro empaquetado y a la entrega al repartidor, y lo estamos revisando esta semana. También he planteado la llamada al equipo: cuando un cliente llama para decir que algo ha ido mal, esa llamada debe terminar con una solución. Le agradezco que nos señalara ambas cosas en lugar de marcharse sin más. Si quiere comentarlo directamente con nosotros, estaremos encantados.",
-    firm: "Gracias por su opinión: la comida fría y el trato en su llamada son dos puntos justos, y por ellos estamos revisando el empaquetado y nuestro protocolo telefónico. Con todo el respeto, le diré que después de esa llamada no volvimos a saber de usted, así que no tuvimos forma de corregir ninguno de los dos pedidos en su momento. La oferta sigue en pie: escríbanos con los datos del pedido y lo compensaremos. Preferimos arreglarlo antes que perderle por ello."
+    apologetic: "Gracias por tomarse el tiempo de escribir, aunque lamentamos profundamente que su experiencia haya sido así. Recibir la comida fría dos veces seguidas, y encima sentirse ignorado al llamar, es algo que no debería ocurrir jamás y entendemos su decepción. Nos hacemos totalmente responsables. Esto no refleja los estándares que queremos ofrecer. Si nos da una oportunidad, nos gustaría hablar con usted directamente para resolver la situación. Por favor, contáctenos. Queremos recuperar su confianza.",
+    professional: "Gracias por su reseña. Pedimos disculpas por los inconvenientes que ha experimentado. La temperatura de la comida durante el reparto y la atención telefónica son aspectos que tomamos muy en serio. Aunque la distancia es corta, factores como el embalaje o los tiempos de preparación pueden influir. Estamos revisando nuestros procesos para mejorar. Lamentamos que el trato recibido al llamar no fuera el adecuado y nos comprometemos a reforzar la formación del equipo. Esperamos poder compensarle en el futuro.",
+    firm: "Gracias por compartir su experiencia. Tomamos muy en serio cada queja sobre la temperatura de la comida, aunque a 10 minutos el reparto puede verse afectado por factores externos como el tráfico o las condiciones del pedido. Lamentamos que sintiera desatención al llamar, eso sí es algo que debemos mejorar. Nos esforzamos por ofrecer el mejor servicio posible y valoramos la retroalimentación constructiva. Si desea darnos más detalles, estamos disponibles para escucharle directamente y analizar lo ocurrido."
   }
 };
 Object.assign(I18N.AR, { haveAccountQ:"لديك حساب بالفعل؟", newHereQ:"جديد هنا؟" });
