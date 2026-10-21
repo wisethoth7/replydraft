@@ -312,7 +312,10 @@
 
 <!-- AUTH MODAL -->
 <div id="authModal" onclick="if(event.target===this)closeAuth()" role="dialog" aria-modal="true">
-  <div class="auth-box">
+  <div class="auth-box" style="position:relative">
+    <button type="button" id="authCloseBtn" aria-label="Close" onclick="closeAuth()"
+      style="position:absolute;top:10px;right:12px;background:transparent;border:none;color:var(--text2);font-size:22px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:6px;font-family:inherit"
+      onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text2)'">&times;</button>
     <div class="auth-tabs">
       <button class="auth-tab active" id="tabSignup" onclick="switchAuthTab('signup')" data-i18n="signupFree">Sign up free</button>
       <button class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')" data-i18n="login">Log in</button>
@@ -441,6 +444,23 @@
     ✨ Generate 3 Professional Replies
   </button>
 
+  <!-- B2: logged-out nudge under the Generate button -->
+  <p id="genAuthNote" style="display:none;text-align:center;font-size:12px;color:var(--text2);margin-top:10px"
+     data-i18n="genAuthNote">Free account required — takes 10 seconds.</p>
+
+  <!-- B1: static "See it in action" sample — no API call, visible logged out -->
+  <div id="demoSection" style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border)">
+    <div class="results-label" data-i18n="demoLabel">SEE IT IN ACTION — A REAL EXAMPLE</div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:8px"
+           data-i18n="demoReviewLabel">⭐ 1-STAR GOOGLE REVIEW</div>
+      <div id="demoReview" style="font-size:14px;line-height:1.7;color:var(--text)"></div>
+    </div>
+    <div class="reply-cards" id="demo-cards"></div>
+    <p style="text-align:center;font-size:11px;color:var(--text2);margin-top:14px"
+       data-i18n="demoNote">This is a sample of ReplyDraft's output. Paste your own message above to generate 3 replies.</p>
+  </div>
+
   <!-- Upgrade gate (inline — shown when quota exceeded) -->
   <div id="upgradeGate">
     <div style="font-size:36px;margin-bottom:10px">🔒</div>
@@ -482,19 +502,23 @@
 <div class="pricing-strip">
   <div class="pricing-inner">
     <h2 data-i18n="pricingTitle">Simple pricing</h2>
-    <p data-i18n="pricingSub">Try free — no credit card needed. Upgrade when you're ready.</p>
+    <p data-i18n="pricingSub">Free account — 5 replies a month. No credit card.</p>
     <div class="price-row">
       <div class="price-opt">
         <div class="pname">FREE</div>
         <div class="pamt"><sup>$</sup>0</div>
         <div class="pper" data-i18n="priceForever">forever</div>
         <div class="pfeat" data-i18n-html="freeFeat">✓ 5 replies per month<br>✓ All 3 tones<br>✓ All sources</div>
+        <button class="nav-signup-btn" style="width:100%;margin-top:16px;padding:11px 16px;font-size:13px;border-radius:9px;cursor:pointer;font-family:inherit"
+          onclick="openAuth('signup')" data-i18n="startFree">Start free</button>
       </div>
       <div class="price-opt popular">
         <div class="pname" style="color:var(--purple)">PRO</div>
         <div class="pamt"><sup>$</sup>9</div>
         <div class="pper" data-i18n="pricePerMonth">per month</div>
         <div class="pfeat" data-i18n-html="proFeat">✓ Unlimited replies<br>✓ Custom business tone<br>✓ Reply history saved<br>✓ Priority generation</div>
+        <button class="upgrade-btn" style="width:100%;margin-top:16px;padding:11px 16px;font-size:13px;border-radius:9px"
+          onclick="openUpgrade()" data-i18n="goPro">Go Pro — $9/mo</button>
       </div>
     </div>
   </div>
@@ -542,9 +566,88 @@ function applyI18n() {
   // Re-render JS-driven UI so nothing leaks English
   if (currentUser) showLoggedInNav(); else showLoggedOutNav();
   if (typeof switchAuthTab === 'function') switchAuthTab(_authMode);
+  if (typeof renderDemo === 'function') renderDemo();
+  if (typeof updateGenAuthNote === 'function') updateGenAuthNote();
 }
 function setUiLang(code) { UI_LANG = code; localStorage.setItem('rd_lang', code); applyI18n(); }
+
+// B1: paint the static sample (EN fallback for languages without their own).
+function renderDemo() {
+  const d = DEMO_SAMPLE[UI_LANG] || DEMO_SAMPLE.EN;
+  const review = document.getElementById('demoReview');
+  const cards  = document.getElementById('demo-cards');
+  if (!review || !cards) return;
+  review.textContent = d.review;
+  cards.innerHTML = TONES.map(tone => `<div class="reply-card">
+      <div class="reply-header">
+        <span class="tone-badge ${tone.cssClass}">${tone.label}</span>
+        <span class="tone-desc">${tone.desc}</span>
+      </div>
+      <div class="reply-body">${escHtml(d[tone.key] || '')}</div>
+    </div>`).join('');
+}
+
+// B2: the "free account required" line belongs to logged-out visitors only.
+function updateGenAuthNote() {
+  const el = document.getElementById('genAuthNote');
+  if (el) el.style.display = currentUser ? 'none' : 'block';
+}
 Object.assign(I18N.EN, { haveAccountQ:"Already have an account?", newHereQ:"New here?" });
+
+// ── B1/B2/B3 strings. EN/AR/ES are localised; the other five languages
+//    intentionally fall back to the EN sample (t() falls back to I18N.EN).
+Object.assign(I18N.EN, {
+  pricingSub:"Free account — 5 replies a month. No credit card.",
+  startFree:"Start free", goPro:"Go Pro — $9/mo",
+  genAuthNote:"Free account required — takes 10 seconds.",
+  demoLabel:"SEE IT IN ACTION — A REAL EXAMPLE",
+  demoReviewLabel:"⭐ 1-STAR GOOGLE REVIEW",
+  demoNote:"This is a sample of ReplyDraft's output. Paste your own message above to generate 3 replies."
+});
+Object.assign(I18N.AR, {
+  startFree:"ابدأ مجانًا", goPro:"اشترك في Pro — 9 دولار/شهر",
+  genAuthNote:"يتطلب حسابًا مجانيًا — لا يستغرق سوى 10 ثوانٍ.",
+  pricingSub:"حساب مجاني — 5 ردود شهريًا. بدون بطاقة ائتمان.",
+  demoLabel:"شاهدها أثناء العمل — مثال حقيقي",
+  demoReviewLabel:"⭐ تقييم بنجمة واحدة على Google",
+  demoNote:"هذا نموذج لمخرجات ReplyDraft. الصق رسالتك في الأعلى لإنشاء 3 ردود."
+});
+Object.assign(I18N.ES, {
+  startFree:"Empieza gratis", goPro:"Hazte Pro — $9/mes",
+  genAuthNote:"Se necesita una cuenta gratuita — tarda 10 segundos.",
+  pricingSub:"Cuenta gratis — 5 respuestas al mes. Sin tarjeta.",
+  demoLabel:"VELO EN ACCIÓN — UN EJEMPLO REAL",
+  demoReviewLabel:"⭐ RESEÑA DE 1 ESTRELLA EN GOOGLE",
+  demoNote:"Este es un ejemplo de lo que genera ReplyDraft. Pega tu propio mensaje arriba para obtener 3 respuestas."
+});
+Object.assign(I18N.FR, { pricingSub:"Compte gratuit — 5 réponses par mois. Sans carte." });
+Object.assign(I18N.PT, { pricingSub:"Conta grátis — 5 respostas por mês. Sem cartão." });
+Object.assign(I18N.DE, { pricingSub:"Kostenloses Konto — 5 Antworten pro Monat. Keine Karte." });
+Object.assign(I18N.ZH, { pricingSub:"免费账户——每月 5 条回复。无需信用卡。" });
+Object.assign(I18N.RU, { pricingSub:"Бесплатный аккаунт — 5 ответов в месяц. Без карты." });
+
+// ── B1: the sample itself. EN/AR/ES localised; others show the EN sample.
+//    Replies obey the generator's own rules (under 120 words, same 3 tones).
+const DEMO_SAMPLE = {
+  EN: {
+    review: "Ordered here twice and both times the food was cold by the time it arrived. I live 10 minutes away. Staff seemed disinterested when I called to complain. Won't be ordering again. Extremely disappointed.",
+    apologetic: "I'm so sorry — twice is twice too many, and cold food after a 10-minute drive is on us, not on you. I'm just as sorry about the call; being brushed off when you took the time to tell us is the part that bothers me most. I've shared this with our kitchen and the team who answer the phone so the handover gets tighter. If you'd ever be willing to give us one more try, please ask for me by name and I'll look after the order myself. Thank you for being honest with us.",
+    professional: "Thank you for taking the time to write this. Cold food on both orders points to something in our packaging and handover to the driver, and that's being reviewed this week. I've also raised the phone call with the team — when a customer calls to tell us something is wrong, that call should end with a fix, not a shrug. I appreciate you flagging both issues rather than leaving quietly. If you'd like to talk it through directly, we'd welcome the chance.",
+    firm: "Thank you for the feedback — the cold food and the way your call was handled are both fair points, and we're looking at our packaging and our phone process because of them. I would gently say that we never heard from you after that call, so we had no way to put either order right at the time. The offer still stands: contact us with the order details and we'll make it good. We'd rather fix it than lose you over it."
+  },
+  AR: {
+    review: "طلبت من هنا مرتين وفي كلتا المرتين وصل الطعام باردًا. أسكن على بعد 10 دقائق فقط. ولم يبدُ أن الموظفين مهتمون عندما اتصلت لأشتكي. لن أطلب مرة أخرى. خيبة أمل كبيرة.",
+    apologetic: "أعتذر بصدق — مرتان أكثر من اللازم، ووصول الطعام باردًا بعد مسافة 10 دقائق مسؤوليتنا نحن لا مسؤوليتك. ويحزنني أكثر ما حدث في الاتصال؛ فمن تكبّد عناء إبلاغنا يستحق إنصاتًا حقيقيًا. لقد نقلت ملاحظتك إلى المطبخ وإلى فريق الهاتف لتحسين التسليم. وإن أردت منحنا فرصة أخرى، اطلبني بالاسم وسأتابع طلبك بنفسي. شكرًا لصراحتك معنا.",
+    professional: "شكرًا لك على وقتك في كتابة هذا. وصول الطعام باردًا في الطلبين يشير إلى خلل في التغليف وفي تسليم الطلب للسائق، ونحن نراجع ذلك هذا الأسبوع. كما أثرت موضوع الاتصال مع الفريق — فالمكالمة التي يبلّغنا فيها العميل بوجود مشكلة يجب أن تنتهي بحل. أقدّر أنك أخبرتنا بالأمرين بدلًا من الانصراف بصمت. وإن رغبت في الحديث معنا مباشرة، فنحن نرحب بذلك.",
+    firm: "شكرًا على ملاحظاتك — برودة الطعام وطريقة التعامل مع مكالمتك ملاحظتان عادلتان، ونحن نراجع التغليف وإجراءات الهاتف بسببهما. وأود أن أذكر بلطف أننا لم نسمع منك بعد تلك المكالمة، فلم تكن لدينا وسيلة لتصحيح أي من الطلبين في وقتها. والعرض ما زال قائمًا: تواصل معنا ببيانات الطلب وسنصحح الأمر. نحن نفضّل إصلاح الخطأ على أن نخسرك بسببه."
+  },
+  ES: {
+    review: "Pedí aquí dos veces y las dos veces la comida llegó fría. Vivo a 10 minutos. El personal pareció desinteresado cuando llamé para quejarme. No volveré a pedir. Enormemente decepcionado.",
+    apologetic: "Lo siento mucho: dos veces ya es demasiado, y que la comida llegue fría a 10 minutos de distancia es culpa nuestra, no suya. Lo de la llamada me pesa aún más; quien se toma la molestia de avisarnos merece que le escuchemos de verdad. Ya lo he comentado con la cocina y con el equipo que atiende el teléfono para ajustar la entrega al repartidor. Si algún día quisiera darnos otra oportunidad, pregunte por mí y yo me encargo personalmente de su pedido. Gracias por su sinceridad.",
+    professional: "Gracias por tomarse el tiempo de escribirnos. Que la comida llegara fría en los dos pedidos apunta a nuestro empaquetado y a la entrega al repartidor, y lo estamos revisando esta semana. También he planteado la llamada al equipo: cuando un cliente llama para decir que algo ha ido mal, esa llamada debe terminar con una solución. Le agradezco que nos señalara ambas cosas en lugar de marcharse sin más. Si quiere comentarlo directamente con nosotros, estaremos encantados.",
+    firm: "Gracias por su opinión: la comida fría y el trato en su llamada son dos puntos justos, y por ellos estamos revisando el empaquetado y nuestro protocolo telefónico. Con todo el respeto, le diré que después de esa llamada no volvimos a saber de usted, así que no tuvimos forma de corregir ninguno de los dos pedidos en su momento. La oferta sigue en pie: escríbanos con los datos del pedido y lo compensaremos. Preferimos arreglarlo antes que perderle por ello."
+  }
+};
 Object.assign(I18N.AR, { haveAccountQ:"لديك حساب بالفعل؟", newHereQ:"جديد هنا؟" });
 Object.assign(I18N.ES, { haveAccountQ:"¿Ya tienes una cuenta?", newHereQ:"¿Nuevo aquí?" });
 Object.assign(I18N.FR, { haveAccountQ:"Vous avez déjà un compte ?", newHereQ:"Nouveau ici ?" });
@@ -584,12 +687,14 @@ let currentRemaining = null; // null = unknown/Pro, number = Free remaining
 
 // ── NAV ──────────────────────────────────────────────────────────────────
 function showLoggedOutNav() {
+  updateGenAuthNote();
   document.getElementById('navAuth').innerHTML =
     '<button class="nav-login-btn" onclick="openAuth(\'login\')">' + t('login') + '</button>' +
     '<button class="nav-signup-btn" onclick="openAuth(\'signup\')">' + t('signupFree') + '</button>';
 }
 
 function showLoggedInNav() {
+  updateGenAuthNote();
   let badgeHtml;
   if (currentPlan === 'pro') {
     badgeHtml = '<div class="usage-badge" style="color:var(--purple);border-color:rgba(139,92,246,.3)">' + t('proPlan') + '</div>';
@@ -682,6 +787,13 @@ function openAuth(mode) {
 function closeAuth() {
   document.getElementById('authModal').classList.remove('visible');
 }
+
+// B4: Escape key closes the auth modal (✕ and backdrop click handled inline)
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const m = document.getElementById('authModal');
+  if (m && m.classList.contains('visible')) closeAuth();
+});
 
 function switchAuthTab(mode) {
   _authMode = mode;
@@ -972,6 +1084,8 @@ function renderReplies(replies) {
     }
   }
 
+  const demo = document.getElementById('demoSection');
+  if (demo) demo.style.display = 'none';   // real replies replace the sample
   document.getElementById('results').style.display = 'block';
   document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
