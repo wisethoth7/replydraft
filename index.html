@@ -816,8 +816,8 @@ async function submitAuth() {
   const btn      = document.getElementById('authSubmitBtn');
 
   if (!email || !password) { setAuthMsg('error', 'Please enter your email and password.'); return; }
-  if (_authMode === 'signup' && password.length < 6) {
-    setAuthMsg('error', 'Password must be at least 6 characters.'); return;
+  if (_authMode === 'signup' && password.length < 8) {
+    setAuthMsg('error', 'Password must be at least 8 characters.'); return;
   }
 
   btn.disabled    = true;
@@ -1120,7 +1120,7 @@ async function submitRdNewPassword() {
   const pw = document.getElementById('rd-new-pw-input').value;
   const btn = document.getElementById('rd-new-pw-btn');
   const msgEl = document.getElementById('rd-new-pw-msg');
-  if (pw.length < 6) { msgEl.textContent = 'Password must be at least 6 characters.'; msgEl.className = 'auth-msg error'; msgEl.style.display = 'block'; return; }
+  if (pw.length < 8) { msgEl.textContent = 'Password must be at least 8 characters.'; msgEl.className = 'auth-msg error'; msgEl.style.display = 'block'; return; }
   btn.disabled = true; btn.textContent = 'Updating...';
   const { error } = await sb.auth.updateUser({ password: pw });
   btn.disabled = false; btn.textContent = 'Update password';
